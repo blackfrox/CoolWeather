@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
     tools:context="com.example.coolweather.ui.WeatherActivity">
 
     <ImageView
@@ -22,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ScrollView
+            <android.support.v4.widget.NestedScrollView
                 android:id="@+id/weatherLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -46,12 +47,12 @@
                     <include layout="@layout/suggestion"/>
 
                 </LinearLayout>
-            </ScrollView>
+            </android.support.v4.widget.NestedScrollView>
         </android.support.v4.widget.SwipeRefreshLayout>
 
         <fragment
             android:id="@+id/choose_fragment"
-            android:name="com.example.coolweather.ChooseFragment"
+            android:name="com.example.coolweather.ui.ChooseFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="start"/>

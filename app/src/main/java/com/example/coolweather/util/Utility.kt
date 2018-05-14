@@ -7,6 +7,7 @@ import com.example.coolweather.db.County
 import com.example.coolweather.db.Province
 import com.example.coolweather.gson.Weather
 import com.google.gson.Gson
+import com.orhanobut.logger.Logger
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -95,7 +96,6 @@ object Utility {
         if (!TextUtils.isEmpty(response)){
             try {
                 val jsonObject=JSONObject(response)
-                Log.d("Util", response)
                 val jsonArray=jsonObject.getJSONArray("HeWeather")
                 val weatherContent=jsonArray.getJSONObject(0).toString()
                 return Gson().fromJson(weatherContent,Weather::class.java)

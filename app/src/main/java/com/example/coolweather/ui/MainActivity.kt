@@ -3,7 +3,6 @@ package com.example.coolweather.ui
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.preference.PreferenceManager
-import com.example.coolweather.ChooseFragment
 import com.example.coolweather.R
 import kotlinx.android.synthetic.main.activity_main.*
 
