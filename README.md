@@ -3,11 +3,10 @@
 整体架构: MVP+Kotlin+Retrofit2+RxJava2
 
 ## Screenshots
-<a href="art/01.png"><img src="art/01.png" width="30%"/></a>
-<a href="screenshots/02.png"><img src="screenshots/02.png" width="30%"/></a>
-<a href="screenshots/03.png"><img src="screenshots/03.png" width="30%"/></a>
 
-<a href="screenshots/04.png"><img src="screenshots/04.png" width="30%"/></a> <a href="screenshots/05.png"><img src="screenshots/05.png" width="30%"/></a><a href="screenshots/06.png"><img src="screenshots/06.png" width="30%"/>
+<a href="screenshots/01.jpg"><img src="screenshots/01.jpg" width="30%"/></a><a href="screenshots/02.jpg"><img src="screenshots/02.jpg" width="30%"/></a><a href="screenshots/03.jpg"><img src="screenshots/03.jpg" width="30%"/></a>
+
+<a href="screenshots/04.jpg"><img src="screenshots/04.jpg" width="30%"/></a> <a href="screenshots/05.jpg"><img src="screenshots/05.jpg" width="30%"/></a><a href="screenshots/06.jpg"><img src="screenshots/06.jpg" width="30%"/>
 
 ## Thanks to the open source project
 
