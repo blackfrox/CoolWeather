@@ -19,7 +19,7 @@ class AboutActivity : BaseActivity() {
         initToolbar(toolbar)
         //项目主页
         btn_web_home.setOnClickListener {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/breakfrox/CoolWeather")))
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/blackfrox/CoolWeather")))
         }
         //分享
         btn_share_app.setOnClickListener {
