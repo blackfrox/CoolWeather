@@ -3,4 +3,8 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="add">添加</string>
+
+    <string name="open_source">• 和风天气提供天气数据\n• 百度定位提供定位服务
+    </string>
 </resources>

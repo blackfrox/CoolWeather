@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-    android:layout_margin="15dp"
+    android:layout_margin="16dp"
     android:background="#8000">
 
     <TextView
@@ -19,66 +18,56 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp">
+        android:layout_margin="16dp">
 
         <RelativeLayout
+            android:layout_weight="1"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
+            android:layout_height="match_parent">
             <LinearLayout
                 android:orientation="vertical"
+                android:layout_centerInParent="true"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true">
-
-                <TextView
-                    android:id="@+id/aqiTv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:textColor="#fff"
-                    android:textSize="40sp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="AQI指数"
-                    android:textColor="#fff"/>
+                android:layout_height="wrap_content">
+            <TextView
+                android:layout_gravity="center"
+                android:textColor="#fff"
+                android:textSize="40sp"
+                android:id="@+id/aqiTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:textColor="#fff"
+                android:text="API指数"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
             </LinearLayout>
 
         </RelativeLayout>
 
         <RelativeLayout
+            android:layout_weight="1"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
+            android:layout_height="match_parent">
             <LinearLayout
+                android:layout_centerInParent="true"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true">
-
+                android:layout_height="wrap_content">
                 <TextView
+                    android:textSize="40sp"
+                    android:layout_gravity="center"
                     android:id="@+id/pm25Tv"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:textColor="#fff"
-                    android:textSize="40sp"/>
-
-
-
+                    android:layout_height="wrap_content"/>
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
+                    android:textColor="#fff"
                     android:text="PM2.5指数"
-                    android:textColor="#fff"/>
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
             </LinearLayout>
-
         </RelativeLayout>
     </LinearLayout>
 </LinearLayout>
