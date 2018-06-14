@@ -1,6 +1,7 @@
 # CoolWeather
 
 整体架构: MVP+Kotlin+Retrofit2+RxJava2
+(天气api改成和风天气的原api，添加拖拽和滑动，自动定位，添加城市，分享)
 
 ## Screenshots
 
