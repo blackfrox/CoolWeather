@@ -20,5 +20,7 @@ mvp参考: 官方的mvp项目(https://github.com/googlesamples/android-architect
 * [Glide](https://github.com/bumptech/glide)
 * [RxPermission](https://github.com/tbruyelle/RxPermissions)
 * [BaseRecyclerViewAdapterHelper](https://github.com/CymChad/BaseRecyclerViewAdapterHelper)
+* [Bugly](https://bugly.qq.com/docs/user-guide/instruction-manual-android/?v=20180521124306) 
+* [Leakcanary](https://github.com/square/leakcanary)
 
 
