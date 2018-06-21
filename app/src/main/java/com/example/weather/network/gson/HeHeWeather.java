@@ -2,6 +2,9 @@ package com.example.weather.network.gson;
 
 import java.util.List;
 
+/**
+ * 已弃用
+ */
 public class HeHeWeather {
 
     private List<HeWeatherBean> HeWeather;

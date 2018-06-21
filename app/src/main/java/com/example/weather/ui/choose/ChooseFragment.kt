@@ -4,14 +4,15 @@ import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.app.Fragment
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import com.example.weather.R
 import com.example.weather.base.BaseFragment
 import com.example.weather.mvp.contract.ChooseContract
 import com.example.weather.mvp.presenter.ChoosePresenter
-import com.example.weather.util.event.CityManagerEvent
-import com.example.weather.util.tool.RxBus
 import kotlinx.android.synthetic.main.fragment_choose_area.*
 import org.jetbrains.anko.support.v4.toast
 
@@ -19,7 +20,7 @@ import org.jetbrains.anko.support.v4.toast
 /**
  * Created by Administrator on 2018/4/9 0009.
  */
-class ChooseFragment: BaseFragment(),ChooseContract.View{
+class ChooseFragment: Fragment(),ChooseContract.View{
 
     override lateinit var presenter: ChooseContract.Presenter
 
@@ -36,12 +37,17 @@ class ChooseFragment: BaseFragment(),ChooseContract.View{
     private val dataList = arrayListOf<String>()
     private val  mAdapter by lazy { ArrayAdapter(context,android.R.layout.simple_list_item_1, dataList) }
 
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_choose_area
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_choose_area,container,false)
     }
-    override fun initView(savedInstanceState: Bundle?) {
 
-        ChoosePresenter(this, activity!!)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        initView(savedInstanceState)
+        super.onViewCreated(view, savedInstanceState)
+    }
+
+    fun initView(savedInstanceState: Bundle?) {
+        presenter=ChoosePresenter(this, activity!!)
 
         listView.adapter=mAdapter
         listView.setOnItemClickListener { _, _, position, _ ->

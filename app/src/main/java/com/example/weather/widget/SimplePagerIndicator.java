@@ -155,6 +155,10 @@ public class SimplePagerIndicator extends View implements ViewPager.OnPageChange
         invalidate();
     }
 
+    public void setCurrentItem(int pos){
+        selectedPosition=pos;
+        invalidate();
+    }
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);

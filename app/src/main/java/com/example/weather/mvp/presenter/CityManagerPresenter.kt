@@ -2,8 +2,8 @@ package com.example.weather.mvp.presenter
 
 import android.text.TextUtils
 import com.example.weather.mvp.contract.CityManagerContract
-import com.example.weather.util.event.CityManagerEvent
-import com.example.weather.util.tool.RxBus
+import com.example.weather.other.RxBus.event.CityManagerEvent
+import com.example.weather.other.RxBus.RxBus
 
 class CityManagerPresenter(val view: CityManagerContract.View) :
         CityManagerContract.Presenter {
@@ -19,11 +19,6 @@ class CityManagerPresenter(val view: CityManagerContract.View) :
                     if (!TextUtils.isEmpty(it.countyName))
                         view.addData(it.countyName)
                 })
-    }
-
-
-    override fun start() {
-
     }
 
 }

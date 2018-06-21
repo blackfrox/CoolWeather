@@ -1,20 +1,15 @@
 package com.example.weather.mvp.presenter
 
-import android.annotation.SuppressLint
 import android.util.Log
-import com.example.weather.MyApp
+import com.example.wanandroidtest.util.applyScheduler
 import com.example.weather.mvp.contract.WeatherContract
 import com.example.weather.network.api.RetrofitHelper
 import com.example.weather.network.gson.HeLifeStyle
-import com.example.weather.network.gson.HeWeather
-import com.example.weather.util.HttpUtil
-import com.example.weather.util.Utility
-import com.example.wanandroidtest.util.applyScheduler
+import com.example.weather.network.gson.HeWeatherForecast
+import com.example.weather.other.RxBus.RxBus
+import com.example.weather.other.RxBus.event.MainRefresh
 import io.reactivex.Observable
-import okhttp3.Call
-import okhttp3.Response
-import org.jetbrains.anko.runOnUiThread
-import java.io.IOException
+import org.litepal.util.LogUtil
 
 class WeatherPresenter(val view: WeatherContract.View)
     : WeatherContract.Presenter{
@@ -25,12 +20,12 @@ class WeatherPresenter(val view: WeatherContract.View)
 
     private val model by lazy { RetrofitHelper.instance.getWeatherApi() }
 
-    override fun getWeather(cityName: String){
-       addSubscribe( Observable.merge(model.getWeather(cityName),model.getLifeStyle(cityName))
+    override fun getWeather(countyName: String){
+       addSubscribe( Observable.merge(model.getWeatherForecast(countyName),model.getLifeStyle(countyName))
                .applyScheduler()
                .subscribe({
                    when(it){
-                       is HeWeather ->{
+                       is HeWeatherForecast ->{
                            if (it.heWeather6[0].status=="ok")
                                view.showWeatherInfo(it.heWeather6[0].daily_forecast)
                            else
@@ -40,42 +35,26 @@ class WeatherPresenter(val view: WeatherContract.View)
                            view.showLifeStyle(it)
                        }
                    }
+                   RxBus.instance.post(MainRefresh(false))
                },{
                    Log.d("MainPresenter","error Message::::")
                    it.printStackTrace()
                }))
     }
 
-    /**
-     * 根据天气id请求天气信息
-     * @param weatherId 例如"CN101010100"
-     */
-    fun requestWeather(weatherId: String) {
-        val weatherUrl = "http://guolin.tech/api/weather?cityid=$weatherId&key=df7cda9693794b85a9ffc8fdb781230c"
-        HttpUtil.sendOkHttpRequest(weatherUrl, object : okhttp3.Callback {
-            override fun onFailure(call: Call?, e: IOException?) {
-
-            }
-
-            @SuppressLint("CommitPrefEdits")
-            override fun onResponse(call: Call?, response: Response) {
-                val responseText = response.body()!!.string()
-                val weather = Utility.handleWeatherResponse(responseText)
-                MyApp.instance.runOnUiThread {
-                    view.showMessage("network success")
-                }
-//                activity.runOnUiThread {
-//                    if (weather != null && "ok".equals(weather.status)) {
-//                        val editor = PreferenceManager.getDefaultSharedPreferences(activity)
-//                                .edit()
-//                        editor.putString("weather", responseText)
-//                        editor.apply()
-////                        view.showWeatherInfo(weather)
-//                    }
-//                    }else
-//                     view.showFail()
-                }
-            })
+    override fun refresh(countyName: String) {
+        addSubscribe(model.getWeatherNow(countyName)
+                .applyScheduler()
+                .subscribe({
+                    if (it.heWeather6[0].status=="ok")
+                        view.showRefresh(it.heWeather6[0])
+                    else
+                        view.showMessage("网络请求失败")
+                    RxBus.instance.post(MainRefresh(false))
+                },{
+                    LogUtil.d("WeatherPresenter",it.toString())
+                    view.showMessage("未知错误")
+                    RxBus.instance.post(MainRefresh(false))
+                }))
     }
-
 }

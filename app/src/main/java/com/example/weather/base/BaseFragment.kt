@@ -8,8 +8,6 @@ import android.view.ViewGroup
 
 abstract class BaseFragment: Fragment() {
 
-//    lateinit var mPresenter: BasePresenter
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(getLayoutId(),container,false)
     }
@@ -19,12 +17,13 @@ abstract class BaseFragment: Fragment() {
         initView(savedInstanceState)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-//        mPresenter.onDestroy()
-    }
     abstract fun initView(savedInstanceState: Bundle?)
 
     abstract fun getLayoutId(): Int
+
+    override fun onDestroy() {
+        super.onDestroy()
+    }
+
 
 }

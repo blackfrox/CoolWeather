@@ -1,16 +1,19 @@
-package com.example.weather.util.tool
+package com.example.weather.other.RxBus
 
 import io.reactivex.Flowable
 import io.reactivex.processors.PublishProcessor
 import io.reactivex.subscribers.SerializedSubscriber
 
 /**
+ * 1 介绍: 使用RxJava2编写的EventBus。
  *
- * 代替广播 进行组件之间的通信
- * 上级注册接收toFlowable()，下级发送post(**::class.java)
- * 不知道为什么这个项目里用就闪退（小声bibi: MMP）
+ * 2 作用：代替广播 进行组件之间的通信
+ *
+ *３使用步骤：①上级注册接收使用: toFlowable()，②下级发送使用:　post(**::class.java)
+ *
+ * //bug:　好像注册的事件只会回调一次，算了，还是用startActivityForResult()
+ *
  */
-
 class RxBus {
 
     //调用toSerialized(),保证线程安全
@@ -35,6 +38,7 @@ class RxBus {
             mBus.hasSubscribers()
 
     companion object {
+        //注: 下面的变量和方法的意思是一样的，就看你喜欢用哪个
         val instance by lazy { RxBus() }
         fun getDefault() = instance
     }

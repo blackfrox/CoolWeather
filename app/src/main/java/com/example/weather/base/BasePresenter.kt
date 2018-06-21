@@ -7,6 +7,9 @@ import io.reactivex.disposables.Disposable
 
 /**
  * Java8 新增的特性：允许在接口中实现默认方法和使用静态常量
+ *
+ * 介绍:通过compositeDisposable统一管理observable(RxJava2有关)
+ * 作用: 避免内存泄露
  */
 interface BasePresenter {
     companion object {
@@ -14,7 +17,6 @@ interface BasePresenter {
     }
 
     fun start() { }
-    fun start(bdLocation: BDLocation) {}
 
     fun addSubscribe(@NonNull vararg ds: Disposable) {
         compositeDisposable.addAll(*ds)

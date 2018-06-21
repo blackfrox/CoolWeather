@@ -1,6 +1,6 @@
 package com.example.weather.util
 
-import com.example.weather.other.ShareData
+import com.example.weather.other.data.ShareData
 
 object WeatherUtil {
 

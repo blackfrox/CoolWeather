@@ -9,7 +9,6 @@ import android.os.IBinder
 import android.os.SystemClock
 import android.preference.PreferenceManager
 import com.example.weather.util.HttpUtil
-import com.example.weather.util.Utility
 import okhttp3.Call
 import okhttp3.Response
 import java.io.IOException
@@ -23,8 +22,7 @@ class AutoUpdateService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        updateWeather()
-        updateBingPic()
+//        updateWeather()
         val manager=getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val time=8*60*60*1000 //8小时的毫秒数
         val triggerAtTime=SystemClock.elapsedRealtime()+time
@@ -35,46 +33,30 @@ class AutoUpdateService : Service() {
         return super.onStartCommand(intent, flags, startId)
     }
 
-    private fun updateBingPic() {
-        val url="http://guolin.tech/api/bing_pic"
-        HttpUtil.sendOkHttpRequest(url,object : okhttp3.Callback{
-            override fun onResponse(call: Call?, response: Response) {
-                val responseText=response.body()!!.string()
-                prefs.edit()
-                        .putString("bing_pic",responseText)
-                        .apply()
-            }
-
-            override fun onFailure(call: Call?, e: IOException?) {
-                e?.printStackTrace()
-            }
-        })
-    }
-
-    private fun updateWeather() {
-        val weatherString=prefs.getString("weather",null)
-        if (weatherString!=null){
-            //有缓存直接解析天气数据
-            val weather=Utility.handleWeatherResponse(weatherString)
-            if (weather!=null){
-                val weatherId=weather.basic.weatherId
-                val weatherUrl= "http://guolin.tech/api/weather?cityid=" +
-                        "$weatherId&key=bc0418b57b2d4918819d3974ac1285d9"
-                HttpUtil.sendOkHttpRequest(weatherUrl,object : okhttp3.Callback{
-                    override fun onResponse(call: Call?, response: Response) {
-                        val responseText=response.body()!!.string()
-                        val editor=prefs.edit()
-                        editor.putString("weather",responseText)
-                                .apply()
-                    }
-
-                    override fun onFailure(call: Call?, e: IOException?) {
-                        e?.printStackTrace()
-                    }
-                })
-            }
-        }
-    }
+//    private fun updateWeather() {
+//        val weatherString=prefs.getString("weather",null)
+//        if (weatherString!=null){
+//            //有缓存直接解析天气数据
+//            val weather=Utility.handleWeatherResponse(weatherString)
+//            if (weather!=null){
+//                val weatherId=weather.basic.weatherId
+//                val weatherUrl= "http://guolin.tech/api/weather?cityid=" +
+//                        "$weatherId&key=bc0418b57b2d4918819d3974ac1285d9"
+//                HttpUtil.sendOkHttpRequest(weatherUrl,object : okhttp3.Callback{
+//                    override fun onResponse(call: Call?, response: Response) {
+//                        val responseText=response.body()!!.string()
+//                        val editor=prefs.edit()
+//                        editor.putString("weather",responseText)
+//                                .apply()
+//                    }
+//
+//                    override fun onFailure(call: Call?, e: IOException?) {
+//                        e?.printStackTrace()
+//                    }
+//                })
+//            }
+//        }
+//    }
 
 
 }

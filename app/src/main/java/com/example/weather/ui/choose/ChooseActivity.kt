@@ -9,7 +9,6 @@ import com.example.weather.base.BaseActivity
 
 class ChooseActivity : AppCompatActivity() {
 
-
     companion object {
         fun laugch(context: Context){
             context.startActivity(Intent(context, ChooseActivity::class.java))

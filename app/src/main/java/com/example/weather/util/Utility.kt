@@ -4,10 +4,7 @@ import android.text.TextUtils
 import com.example.weather.other.db.City
 import com.example.weather.other.db.County
 import com.example.weather.other.db.Province
-import com.example.weather.network.gson.HEHEWeather00
-import com.google.gson.Gson
 import org.json.JSONArray
-import org.json.JSONObject
 
 /**
  * Created by Administrator on 2018/4/9 0009.
@@ -87,21 +84,21 @@ object Utility {
         return false
     }
 
-    /**
-     * 将返回的JSON数据解析成Weather实体类
-     */
-    fun handleWeatherResponse(response: String): HEHEWeather00? {
-        if (!TextUtils.isEmpty(response)){
-            try {
-                val jsonObject=JSONObject(response)
-                val jsonArray=jsonObject.getJSONArray("HeWeather")
-                val weatherContent=jsonArray.getJSONObject(0).toString()
-                return Gson().fromJson(weatherContent,HEHEWeather00::class.java)
-            }catch (e: Exception){
-                e.printStackTrace()
-            }
-        }
-        return null
-    }
+//    /**
+//     * 将返回的JSON数据解析成Weather实体类
+//     */
+//    fun handleWeatherResponse(response: String): HEHEWeather00? {
+//        if (!TextUtils.isEmpty(response)){
+//            try {
+//                val jsonObject=JSONObject(response)
+//                val jsonArray=jsonObject.getJSONArray("HeWeatherForecast")
+//                val weatherContent=jsonArray.getJSONObject(0).toString()
+//                return Gson().fromJson(weatherContent,HEHEWeather00::class.java)
+//            }catch (e: Exception){
+//                e.printStackTrace()
+//            }
+//        }
+//        return null
+//    }
 
 }

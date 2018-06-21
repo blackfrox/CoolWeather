@@ -1,13 +1,15 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.kotlin_version = '1.1.51'
+//    '1.1.51'
+    ext.kotlin_version = '1.2.41'
     repositories {
         google()
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.2'
+        //3.1.2
+        classpath 'com.android.tools.build:gradle:3.1.3'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -39,4 +41,10 @@ ext{
     gsonVersion = '2.8.2'
     okhttpVersion = '3.9.0'
     retrofitVersion = '2.3.0'
+    //other
+    leakcanaryVersion = '1.5.4'
+    glideVersion = '3.8.0'
+    ankoVersion = '0.10.1'
+    recyclerViewAdapterVersion = '2.9.40'
+    litepalVersion = '1.6.1'
 }

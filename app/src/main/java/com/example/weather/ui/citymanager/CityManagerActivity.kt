@@ -11,7 +11,6 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.text.TextUtils
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import com.chad.library.adapter.base.callback.ItemDragAndSwipeCallback
@@ -19,45 +18,42 @@ import com.chad.library.adapter.base.listener.OnItemDragListener
 import com.chad.library.adapter.base.listener.OnItemSwipeListener
 import com.example.weather.R
 import com.example.weather.base.BaseActivity
-import com.example.weather.mvp.contract.CityManagerContract
-import com.example.weather.mvp.presenter.CityManagerPresenter
 import com.example.weather.other.db.CityWeather
-import com.example.weather.ui.choose.ChooseActivity
 import com.example.weather.ui.adapter.CityManagerAdapter
-import com.example.weather.util.tool.RxBus
-import com.example.weather.util.event.MainEvent
+import com.example.weather.ui.choose.ChooseActivity
+import com.example.weather.ui.main.MainActivity
 import com.example.weather.util.initToolbar
 import kotlinx.android.synthetic.main.activity_city_manager.*
 import kotlinx.android.synthetic.main.toolbar.*
+import org.jetbrains.anko.toast
 import org.litepal.crud.DataSupport
 
 /**
- * 问题: 数据从哪里获取?
- * 答: 笨，当然是从数据库里获取咯！
+ *
  */
-class CityManagerActivity : BaseActivity(), CityManagerContract.View {
+class CityManagerActivity : BaseActivity() {
 
     override fun getLayoutId(): Int {
         return R.layout.activity_city_manager
     }
 
-
-    override lateinit var presenter: CityManagerContract.Presenter
     private lateinit var mAdapter: CityManagerAdapter
     private lateinit var list: List<CityWeather>
     private var dataChanged = false
+    private var selectedPosition = -1
     override fun initView(savedInstanceState: Bundle?) {
         initToolbar(toolbar)
-        presenter = CityManagerPresenter(this)
 
-        list = DataSupport.findAll(CityWeather::class.java)
+        list = DataSupport.order("countyId").find(CityWeather::class.java)
+        if (list.size <= 0)
+            return
         mAdapter = CityManagerAdapter(list)
         recyclerView.apply {
             layoutManager = LinearLayoutManager(this@CityManagerActivity)
             adapter = mAdapter
         }
         mAdapter.apply {
-            //            val itemDragAndSwipeCallback = ItemDragAndSwipeCallback(mAdapter)
+            //设置第一个item禁止滑动和拖拽
             val itemDragAndSwipeCallback = object : ItemDragAndSwipeCallback(mAdapter) {
                 override fun onMove(recyclerView: RecyclerView?, source: RecyclerView.ViewHolder?, target: RecyclerView.ViewHolder?): Boolean =
                         if (source?.adapterPosition == 0 || target?.adapterPosition == 0)
@@ -78,8 +74,8 @@ class CityManagerActivity : BaseActivity(), CityManagerContract.View {
             itemDragAndSwipeCallback.setSwipeMoveFlags(ItemTouchHelper.START or ItemTouchHelper.END)
 
 
-            var draStartPosition = 0
-            // 开启拖拽
+            var draStartPosition = 0 //起始拖拽的位置
+            // 开启拖拽   (获得当前有效行为，用dataChanged变量)
             enableDragItem(itemTouchHelper, R.id.root, true)
             setOnItemDragListener(object : OnItemDragListener {
                 override fun onItemDragMoving(source: RecyclerView.ViewHolder?, from: Int, target: RecyclerView.ViewHolder?, to: Int) {
@@ -91,7 +87,7 @@ class CityManagerActivity : BaseActivity(), CityManagerContract.View {
 
                 override fun onItemDragEnd(viewHolder: RecyclerView.ViewHolder?, pos: Int) {
                     if (draStartPosition != pos) {
-                        dataChanged=true
+                        dataChanged = true
                     }
                 }
 
@@ -103,93 +99,78 @@ class CityManagerActivity : BaseActivity(), CityManagerContract.View {
             setOnItemSwipeListener(object : OnItemSwipeListener {
                 //1 删除数据库中的数据 2 弹出提示  3 更新adapter
                 override fun onItemSwiped(viewHolder: RecyclerView.ViewHolder?, pos: Int) {
-                    val deleteItem = mAdapter.data[pos]
                     Snackbar.make(recyclerView, "删除成功！", Snackbar.LENGTH_LONG)
-                            .apply {
-                                //数据库保存失败
+//                            .apply {
+//                    val deleteItem = mAdapter.data[pos]
+                            //数据库保存失败
 //                                setAction("撤销"){
-////                                    deleteItem.save() //重新保存
 //                                    CityWeather(deleteItem.countyName,pos)
 //                                            .save()
 //                                    mAdapter.addData(pos,deleteItem)
 //                                    mAdapter.notifyItemInserted(pos)
-//                                    dataChanged=false
+//                                    deleteItem.save() //重新保存
 //                                }
-                            }
+//                            }
                             .show()
                     //原来数据库的删除操作需要放在mAdapter之前，不然会报错IndexOutException
-                    DataSupport.deleteAll(CityWeather::class.java, "id = ?", mAdapter.data[pos].id.toString())
+                    DataSupport.deleteAll(CityWeather::class.java, "countyId = ?", mAdapter.data[pos].countyId.toString())
                     mAdapter.apply {
                         data.removeAt(pos)
                         notifyItemRemoved(pos)
                     }
-                    dataChanged=true
+                    dataChanged = true
                 }
+
                 override fun onItemSwipeStart(viewHolder: RecyclerView.ViewHolder?, pos: Int) {
 
                 }
+
                 override fun clearView(viewHolder: RecyclerView.ViewHolder?, pos: Int) {
 
                 }
+
                 override fun onItemSwipeMoving(canvas: Canvas?, viewHolder: RecyclerView.ViewHolder?, dX: Float, dY: Float, isCurrentlyActive: Boolean) {
 
                 }
             })
 
+            //点击跳转有问题，以后再说
+//            setOnItemClickListener { adapter, view, position ->
+//                selectedPosition = position
+//                onBackPressed()
+//            }
         }
     }
 
-    /**
-     * 1 数据库添加数据 2 adapter添加item
-     * 因为添加操作只有一次，所以不需要updateAll
-     */
-    private var isAdded= true
-    override fun addData(countyName: String) {
-        val item = CityWeather(countyName,mAdapter.data.size).apply { save() }
-        mAdapter.apply {
-            addData(item)
-            notifyDataSetChanged()
-        }
-        val list=DataSupport.findAll(CityWeather::class.java)
-        Log.d("CityManagerActivity","addData() adapter size ::::::${mAdapter.data.size}")
-        Log.d("CityManagerActivity","addData() list size ::::::${list.size}")
+    private fun addData(countyName: String) {
+        CityWeather(countyName, mAdapter.data.size)
+                .apply {
+                    if (!mAdapter.data.contains(this)) {
+                        save()
+                        mAdapter.addData(this)
+                        mAdapter.notifyDataSetChanged()
+                        dataChanged = true
+                    } else {
+                        toast("重复的城市！")
+                    }
+                }
     }
 
     /**
-     * 原本是打算将添加、删除、交换通过三个变量进行分开处理，但是考虑到用户可能进行多次操作,会造成无效，
-     * 所以还是用dataChanged一个变量就够了
+     *todo: 后期可以优化一下
      */
     override fun onBackPressed() {
-        when{
-            isAdded -> RxBus.instance.post(MainEvent())
-            dataChanged ->{
-                //更新数据库中的天气数据
-//            val first=DataSupport.findFirst(CityWeather::class.java)
-//            DataSupport.deleteAll(CityWeather::class.java)
-
-                //todo:bug 数据库不能保存数据  1
-                //删除或添加操作后，数据库中的数据的顺序不是我们想要的,所以需要更换id
-                // 全部删除之后添加  2 更新
-
-                //问题，更新数据库表中的数据id时，报错： UNIQUE constraint failed: cityweather.id (code 1555)
-//            for ((i,item) in mAdapter.data.withIndex()){
-//                val values=ContentValues().apply {
-//                    put("id",i)
-//                }
-//                DataSupport.updateAll(CityWeather::class.java,values,"countyName = ?",item.countyName)
-//            }
-
-                DataSupport.deleteAll(CityWeather::class.java)
-                for (item in mAdapter.data)
-                    item.save()
-                val list=DataSupport.findAll(CityWeather::class.java)
-                Log.d("CityManagerActivity","dataChange adapter size ::::::${mAdapter.data.size}")
-                Log.d("CityManagerActivity","dataChange  list size ::::::${list.size}")
-                mAdapter
-                list
-                RxBus.instance.post(MainEvent())
-            }
+        for (i in 0 until mAdapter.getData().size) {
+            val values = ContentValues()
+            values.put("countyId", i)
+            DataSupport.updateAll(CityWeather::class.java, values, "countyName = ?", mAdapter.data[i].countyName)
         }
+
+        val intent = Intent().apply {
+            putExtra(MainActivity.CHANGE, dataChanged)
+            putExtra(MainActivity.SELECTED_ITEM, selectedPosition)
+        }
+        setResult(Activity.RESULT_OK, intent)
         super.onBackPressed()
     }
 
@@ -217,7 +198,7 @@ class CityManagerActivity : BaseActivity(), CityManagerContract.View {
         when (resultCode) {
             Activity.RESULT_OK -> {
                 val countyName = data?.getStringExtra("item")
-                if (!TextUtils.isEmpty(countyName)){
+                if (!TextUtils.isEmpty(countyName)) {
                     addData(countyName!!)
                 }
             }

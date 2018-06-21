@@ -1,4 +1,4 @@
-package com.example.weather.util.event
+package com.example.weather.other.RxBus.event
 
 import java.io.Serializable
 

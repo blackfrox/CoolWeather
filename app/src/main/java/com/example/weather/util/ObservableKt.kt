@@ -17,4 +17,5 @@ fun <T>Observable<T>.applyScheduler(): Observable<T>{
     return subscribeOn(Schedulers.io())
 //            .unsubscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+
 }
