@@ -25,4 +25,3 @@ mvp参考: 官方的mvp项目(https://github.com/googlesamples/android-architect
 * [Leakcanary](https://github.com/square/leakcanary)
 
 
->>>>>>> bed54fc2a6503f39608a6139683c42d8e9fcc8cd
