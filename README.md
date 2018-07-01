@@ -7,6 +7,10 @@
 mvp参考: 官方的mvp项目(https://github.com/googlesamples/android-architecture/tree/todo-mvp-kotlin/)
 天气UI界面可以参考(PS:　暂时还没写进去，打算学习自定义View的时候再加入项目里): Pure天气（https://github.com/Mixiaoxiao/Weather） 和 （https://github.com/li-yu/FakeWeather）
 
+v1.0.1: 增加刷新功能
+v1.0.2: 添加主题切换，清除缓存功能
+点击item跳转功能
+
 ## Screenshots
 
 <a href="screenshots/01.jpg"><img src="screenshots/01.jpg" width="30%"/></a><a href="screenshots/02.jpg"><img src="screenshots/02.jpg" width="30%"/></a><a href="screenshots/03.jpg"><img src="screenshots/03.jpg" width="30%"/></a>
