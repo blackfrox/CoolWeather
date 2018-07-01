@@ -1,8 +1,6 @@
 # CoolWeather
 
-<<<<<<< HEAD
-天气获取失败，原因： api问题导致某些地区的天气信息无法获取
-=======
+
 整体架构: MVP+Kotlin+Retrofit2+RxJava2
 (天气api改成和风天气的原api，添加拖拽和滑动，自动定位，添加城市，分享)
 
@@ -27,4 +25,3 @@ mvp参考: 官方的mvp项目(https://github.com/googlesamples/android-architect
 * [Leakcanary](https://github.com/square/leakcanary)
 
 
->>>>>>> bed54fc2a6503f39608a6139683c42d8e9fcc8cd
