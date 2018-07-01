@@ -135,10 +135,14 @@ class CityManagerActivity : BaseActivity() {
             })
 
             //点击跳转有问题，以后再说
-//            setOnItemClickListener { adapter, view, position ->
-//                selectedPosition = position
-//                onBackPressed()
-//            }
+            setOnItemClickListener { adapter, view, position ->
+                selectedPosition = position
+                val intent = Intent().apply {
+                    putExtra(MainActivity.SELECTED_ITEM, selectedPosition)
+                }
+                setResult(Activity.RESULT_OK, intent)
+                finish()
+            }
         }
     }
 

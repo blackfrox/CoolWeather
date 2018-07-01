@@ -4,6 +4,8 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'kotlin-kapt'
+
 android {
     compileSdkVersion 27
     defaultConfig {
@@ -42,7 +44,6 @@ dependencies {
     //noinspection GradleDependency
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 
-
     //UI
     implementation "com.android.support:appcompat-v7:$rootProject.appcompatVersion"
     implementation "com.android.support:design:$rootProject.appcompatVersion"
@@ -65,10 +66,23 @@ dependencies {
 
     //other
     implementation "org.litepal.android:core:$rootProject.litepalVersion"
-    implementation 'com.tencent.bugly:crashreport:latest.release' //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.2.0
+    implementation 'com.tencent.bugly:crashreport:latest.release'
+    //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.2.0
     //    implementation 'me.yokeyword:fragmentation:1.3.3'
     implementation "com.github.CymChad:BaseRecyclerViewAdapterHelper:$rootProject.recyclerViewAdapterVersion"
     //noinspection GradleDependency
     implementation "com.github.bumptech.glide:glide:$rootProject.glideVersion"
     implementation "org.jetbrains.anko:anko:$rootProject.ankoVersion"
+
+    implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
+    implementation 'com.afollestad.material-dialogs:commons:0.9.6.0'
+//    implementation 'org.greenrobot:eventbus:3.0.0'
+    implementation 'org.greenrobot:eventbus:3.1.1'
+    kapt 'org.greenrobot:eventbus-annotation-processor:3.1.1'  //eventBus在kotlin中与Java的区别
+}
+
+kapt {
+    arguments {
+        arg('eventBusIndex', 'com.example.myapp.MyEventBusIndex')
+    }
 }

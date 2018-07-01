@@ -26,12 +26,13 @@
 
     <!-- 百度定位需要权限 -->
 
-    <!--腾讯bugly需要权限-->
+
+    <!-- 腾讯bugly需要权限 -->
     <uses-permission
         android:name="android.permission.READ_LOGS"
         tools:ignore="ProtectedPermissions"/>
-    <!--腾讯bugly需要权限-->
 
+    <!-- 腾讯bugly需要权限 -->
     <application
         android:name=".MyApp"
         android:allowBackup="true"
@@ -71,18 +72,22 @@
             android:label="城市管理"
             android:screenOrientation="portrait">
         </activity>
-
         <activity
             android:name=".ui.AboutActivity"
             android:label="关于"
             android:screenOrientation="portrait">
         </activity>
-
+        <activity android:name=".ui.setting.SettingActivity"
+                  android:launchMode="singleTop"
+                  android:screenOrientation="portrait">
+        </activity>
         <service
             android:name=".AutoUpdateService"
             android:enabled="true"
             android:exported="false">
         </service>
+
+
     </application>
 
 </manifest>

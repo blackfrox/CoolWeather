@@ -9,7 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 /***
- * 第一个child高度为ScrollView的高度
+ * 第一个child高度铺满全屏
  * @author Mixiaoxiao
  *
  */

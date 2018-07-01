@@ -10,6 +10,7 @@ import com.example.weather.other.RxBus.RxBus
 import com.example.wanandroidtest.SPUtil
 import com.example.wanandroidtest.putString
 import com.example.weather.other.RxBus.event.MainRefresh
+import com.example.weather.other.RxBus.event.ThemeChangedEvent
 import com.tbruyelle.rxpermissions2.RxPermissions
 import org.litepal.crud.DataSupport
 
@@ -23,11 +24,24 @@ class MainPresenter(val view: MainContract.View,
 
     init {
         view.presenter = this
+        registerEvent()
     }
 
+    private fun registerEvent() {
+//        addSubscribe(
+//                RxBus.instance.toFlowable(ThemeChangedEvent::class.java)
+//                .subscribe {
+//                    view.showThemeChange()
+//                })
+    }
+
+
+    /**
+     * @param selectedItem 跳转的position，暂时没写
+     */
     override fun refresh(selectedItem: Int) {
         val list = DataSupport.order("countyId").find(CityWeather::class.java)
-        view.initFragment(list,selectedItem)
+        view.initFragment(list, selectedItem)
     }
 
 
@@ -38,13 +52,12 @@ class MainPresenter(val view: MainContract.View,
      * 将定位信息更新到db数据库中
      */
     override fun start() {
-        //获取百度定位所需权限(PS：flyme默认授权以下权限)
+        //百度定位所需权限(PS：部分国产系统会默认授权其中一些权限)
         RxPermissions(activity)
                 .request(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION,
                         Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .subscribe {
-                    if (!it)
-                        view.showErrorMessage("权限被拒绝，无法正常定位")
+                    if (!it) view.showErrorMessage("权限被拒绝，无法正常定位")
                 }
 
     }
@@ -59,11 +72,10 @@ class MainPresenter(val view: MainContract.View,
             SPUtil.instance.putString(LAST_LOCATED_CITY, nowCity)
         }
 
-        //如果定位发生改变,就更新第一位的城市名字和清空天气数据，从网络上获取cid
+        //如果定位发生改变,就重新更新数据
         DataSupport.findFirst(CityWeather::class.java)
                 .apply {
                     if (this != null) {
-                        //如果定位地点发生改变
                         if (!TextUtils.isEmpty(countyName) && !countyName.equals(nowCity)) {
                             countyName = nowCity //更改城市名字
                             save()

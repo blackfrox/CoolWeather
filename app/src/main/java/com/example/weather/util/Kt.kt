@@ -8,6 +8,12 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
+fun checkNetWork(context: Context,fun1:()->Unit,fun2: () -> Unit) {
+    if (NetworkUtil.isNetConnected())
+        fun1()
+    else
+        fun2()
+}
 /**
  * 根据天气返回图标
  */

@@ -11,7 +11,9 @@ import io.reactivex.subscribers.SerializedSubscriber
  *
  *３使用步骤：①上级注册接收使用: toFlowable()，②下级发送使用:　post(**::class.java)
  *
- * //bug:　好像注册的事件只会回调一次，算了，还是用startActivityForResult()
+ * //缺点: 不能替代startActivityForResult()，
+ *   答： 好像只要把activity的launchMode设置为singTop就行了， (ps:在使用EventBus的时候注意到的，还以为EventBus原本就有这功能)
+ *
  *
  */
 class RxBus {

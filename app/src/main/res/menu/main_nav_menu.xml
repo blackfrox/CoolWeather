@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:showIn="navigation_view">
 
     <item android:id="@+id/nav_city_manager"
         android:title="城市管理"/>
@@ -7,8 +9,12 @@
 
     <item android:title="其他">
         <menu>
+            <item
+                android:id="@+id/nav_settings"
+                android:icon="@drawable/ic_menu_setting"
+                android:title="设置"/>
             <item android:id="@+id/nav_about"
-                  android:icon="@drawable/ic_menu_setting"
+                  android:icon="@drawable/ic_about"
                 android:title="关于"/>
         </menu>
     </item>

@@ -6,8 +6,10 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.example.weather.R
 import com.example.weather.base.BaseActivity
+import com.example.weather.util.StatusBarUtil
+import kotlinx.android.synthetic.main.activity_choose.*
 
-class ChooseActivity : AppCompatActivity() {
+class ChooseActivity : BaseActivity() {
 
     companion object {
         fun laugch(context: Context){
@@ -15,8 +17,11 @@ class ChooseActivity : AppCompatActivity() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_choose)
+    override fun getLayoutId(): Int {
+        return R.layout.activity_choose
+    }
+
+    override fun initView(savedInstanceState: Bundle?) {
+
     }
 }

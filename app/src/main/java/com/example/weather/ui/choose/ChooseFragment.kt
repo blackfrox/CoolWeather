@@ -20,25 +20,25 @@ import org.jetbrains.anko.support.v4.toast
 /**
  * Created by Administrator on 2018/4/9 0009.
  */
-class ChooseFragment: Fragment(),ChooseContract.View{
+class ChooseFragment : Fragment(), ChooseContract.View {
 
     override lateinit var presenter: ChooseContract.Presenter
 
     companion object {
-         val LEVEL_PROVINCE=1
-         val LEVEL_CITY=2
-         val LEVEL_COUNTY=3
+        val LEVEL_PROVINCE = 1
+        val LEVEL_CITY = 2
+        val LEVEL_COUNTY = 3
     }
 
-    private var currentLevel= LEVEL_PROVINCE
+    private var currentLevel = LEVEL_PROVINCE
 
-    private var progressDialog: ProgressDialog?=null
+//    private var progressDialog: ProgressDialog? = null
 
     private val dataList = arrayListOf<String>()
-    private val  mAdapter by lazy { ArrayAdapter(context,android.R.layout.simple_list_item_1, dataList) }
+    private val mAdapter by lazy { ArrayAdapter(context, android.R.layout.simple_list_item_1, dataList) }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_choose_area,container,false)
+        return inflater.inflate(R.layout.fragment_choose_area, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -47,65 +47,78 @@ class ChooseFragment: Fragment(),ChooseContract.View{
     }
 
     fun initView(savedInstanceState: Bundle?) {
-        presenter=ChoosePresenter(this, activity!!)
+        presenter = ChoosePresenter(this, activity!!)
 
-        listView.adapter=mAdapter
+        listView.adapter = mAdapter
         listView.setOnItemClickListener { _, _, position, _ ->
-            when(currentLevel){
-                LEVEL_PROVINCE ->{
+            when (currentLevel) {
+                LEVEL_PROVINCE -> {
                     presenter.queryCities(position)
                 }
-                LEVEL_CITY ->{
+                LEVEL_CITY -> {
                     presenter.queryCounties(position)
                 }
-                LEVEL_COUNTY ->{
-                    val countyName=presenter.countyList[position].countyName
-                    val intent=Intent().apply {
-                        putExtra("item",countyName)
+            //返回到上一个Activity，传回item
+                LEVEL_COUNTY -> {
+                    val countyName = presenter.countyList[position].countyName
+                    val intent = Intent().apply {
+                        putExtra("item", countyName)
                     }
-                    activity?.setResult(Activity.RESULT_OK,intent)
-                    activity?.finish()
+                    activity?.apply {
+                        setResult(Activity.RESULT_OK, intent)
+                        finish()
+                    }
                 }
             }
         }
         backBtn.setOnClickListener {
-            when(currentLevel){
+            when (currentLevel) {
                 LEVEL_COUNTY -> presenter.queryCities()
                 LEVEL_CITY -> presenter.queryProvinces()
                 LEVEL_PROVINCE -> activity?.onBackPressed()
             }
         }
+
         presenter.queryProvinces()
     }
 
     override fun setupToolbar(title: String, showBack: Boolean) {
-        this@ChooseFragment.title.text=title
+        this@ChooseFragment.title.text = title
         if (showBack)
-            backBtn.visibility= View.VISIBLE
+            backBtn.visibility = View.VISIBLE
         else
-            backBtn.visibility=View.GONE
+            backBtn.visibility = View.GONE
 
     }
 
     override fun showChange(dataList: ArrayList<String>, level: Int) {
-        this.dataList.clear()
-        this.dataList.addAll(dataList)
+        this.dataList.apply {
+            clear()
+            addAll(dataList)
+        }
         mAdapter.notifyDataSetChanged()
         listView.setSelection(0)
-        currentLevel= level
+        currentLevel = level
     }
 
-    override fun showProgress(){
-        if (progressDialog==null){
-            progressDialog= ProgressDialog(activity)
-            progressDialog!!.setMessage("正在加载...")
-            progressDialog!!.setCancelable(false)
+    private val progressDialog by lazy {
+        ProgressDialog(activity).apply {
+            setMessage("正在加载...")
+            setCancelable(false)
         }
-        progressDialog?.show()
     }
 
-     override fun closeProgress(){
-        progressDialog?.dismiss()
+    override fun showProgress() {
+//        if (progressDialog == null) {
+//            progressDialog = ProgressDialog(activity)
+//            progressDialog!!.setMessage("正在加载...")
+//            progressDialog!!.setCancelable(false)
+//        }
+        progressDialog.show()
+    }
+
+    override fun closeProgress() {
+        progressDialog.dismiss()
     }
 
     override fun showMessage(message: String) {
@@ -116,6 +129,7 @@ class ChooseFragment: Fragment(),ChooseContract.View{
 //        backBtn.performClick()
 //    }
 
+                                    /*                                         */
     /**
      * 优先查询数据库,其次网络
      */

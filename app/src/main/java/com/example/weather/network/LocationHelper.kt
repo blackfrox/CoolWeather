@@ -19,12 +19,12 @@ class LocationHelper {
                         }
             }
 
-    fun locate(action:(BDLocation)-> Unit) {
+    fun locate(action: (BDLocation) -> Unit) {
         mLocationClient.apply {
-            registerLocationListener(object : BDAbstractLocationListener(){
+            registerLocationListener(object : BDAbstractLocationListener() {
                 override fun onReceiveLocation(p0: BDLocation) {
                     action(p0)
-                    //防止内存泄露
+                    //及时注销，防止内存泄露
                     unRegisterLocationListener(this)
                     stop()
                 }

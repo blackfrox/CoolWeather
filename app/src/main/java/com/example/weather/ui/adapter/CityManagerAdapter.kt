@@ -10,19 +10,19 @@ import com.example.weather.util.ThemeUtil
 import com.example.weather.util.parse
 
 class CityManagerAdapter(data: List<CityWeather>, resId: Int = R.layout.item_city_manager)
-    : BaseItemDraggableAdapter<CityWeather,BaseViewHolder>(resId,data) {
+    : BaseItemDraggableAdapter<CityWeather, BaseViewHolder>(resId, data) {
 
     override fun convert(helper: BaseViewHolder, item: CityWeather) {
-        with(helper){
-            with(item){
+        with(helper) {
+            with(item) {
                 if (helper.adapterPosition == 0) {
                     getView<TextView>(R.id.tv_county_name).setCompoundDrawablesWithIntrinsicBounds(null, null,
                             ThemeUtil.setTintDrawable(R.drawable.ic_location, mContext,
                                     ThemeUtil.getCurrentColorPrimary(mContext)), null)
                 }
-                setText(R.id.tv_county_name,countyName)
-                setText(R.id.tv_weather,weather)
-                setText(R.id.tv_tmp,tmp)
+                setText(R.id.tv_county_name, countyName)
+                setText(R.id.tv_weather, weather)
+                setText(R.id.tv_tmp, tmp)
                 Glide.with(mContext)
                         .load(parse(weather))
             }

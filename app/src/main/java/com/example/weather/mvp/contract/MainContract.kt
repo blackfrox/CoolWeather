@@ -11,6 +11,8 @@ interface MainContract {
         fun showErrorMessage(message: String)
         //初始化
         fun initFragment(list: MutableList<CityWeather>,selectedItem: Int = -1)
+
+        fun showThemeChange()
     }
 
     interface Presenter: BasePresenter{

@@ -12,6 +12,9 @@ class SPUtil{
         private const val SP_NAME="sp_name"
         val instance: SharedPreferences by lazy { MyApp.instance.getSharedPreferences(SP_NAME,Context.MODE_PRIVATE) }
     }
+
+
+
 }
 
 fun SharedPreferences.getInt(key: String, value: Int=0): Int {
@@ -19,6 +22,7 @@ fun SharedPreferences.getInt(key: String, value: Int=0): Int {
 }
 fun SharedPreferences.putInt(key: String, value: Int) {
     edit().putInt(key, value).apply()
+//    SPUtil.instance.edit().putInt(key, value).apply()
 }
 fun SharedPreferences.getBoolean(key: String, value: Boolean=false): Boolean {
     return getBoolean(key, value)

@@ -16,11 +16,13 @@ import com.example.weather.network.gson.HeLifeStyle
 import com.example.weather.network.gson.HeWeatherForecast
 import com.example.weather.network.gson.HeWeatherNow
 import com.example.weather.other.data.ShareData
+import com.example.weather.util.checkNetWork
 import com.example.weather.util.getCurrentTime
 import com.example.weather.util.getWeek
 import com.example.weather.util.parse
 import kotlinx.android.synthetic.main.fragment_weather.*
 import kotlinx.android.synthetic.main.suggestion.*
+import org.jetbrains.anko.support.v4.act
 import org.jetbrains.anko.support.v4.toast
 
 /**
@@ -34,37 +36,37 @@ class WeatherFragment : BaseFragment(), WeatherContract.View {
         super.onDestroy()
     }
 
-    override var presenter: WeatherContract.Presenter = WeatherPresenter(this@WeatherFragment)
-//    override lateinit var presenter: WeatherContract.Presenter
     override fun getLayoutId(): Int {
         return R.layout.fragment_weather
     }
 
-    private var mId: Int = 0 //好像没用，mId的值都没变过
-    //todo: 原本是打算cityManagerActivity中的数据在fragment中保存读取，但是没想到会有bug(莫名其妙多出了一些数据，而且原数据并没有更新)
-    private lateinit var cityWeather: CityWeather
-//    private lateinit var countyName: String
-private val countyName: String by lazy { (arguments!!.getSerializable(ITEM) as CityWeather).countyName }
+    override lateinit var presenter: WeatherContract.Presenter
 
+    private  var cityWeather: CityWeather = CityWeather()
+    private  var countyName: String = ""
     var shareData: ShareData? = null //作为分享时候的数据
-    override fun initView(savedInstanceState: Bundle?) {
-        if (arguments==null)
-            return
-        mId = arguments?.getInt(ID)!!
 
-//        val countyName = arguments?.getString(COUNTY_NAME)!!
-        cityWeather= arguments!!.getSerializable(ITEM) as CityWeather
-//        countyName=cityWeather.countyName
-//         WeatherPresenter(this)
+    override fun initView(savedInstanceState: Bundle?) {
+        if (arguments == null)
+            return
+        cityWeather = arguments!!.getSerializable(ITEM) as CityWeather
+        countyName = cityWeather.countyName
         if (TextUtils.isEmpty(countyName))
             return
-        presenter.getWeather(countyName)
-        cityWeather?.countyName = countyName
-//        this@WeatherFragment.countyName = countyName
 
-        swipeLayout.setColorSchemeColors(resources.getColor(R.color.colorPrimary))
-        swipeLayout.setOnRefreshListener {
-            presenter.refresh(countyName)
+        WeatherPresenter(this@WeatherFragment)
+        presenter.getWeather(countyName)
+        cityWeather.countyName = countyName
+
+        swipeLayout.apply {
+            setColorSchemeColors(resources.getColor(R.color.colorPrimary))
+            setOnRefreshListener {
+                checkNetWork(act, {
+                    presenter.refresh(countyName)
+                }, {
+                    toast("请检查网络后重试")
+                })
+            }
         }
     }
 
@@ -72,23 +74,26 @@ private val countyName: String by lazy { (arguments!!.getSerializable(ITEM) as C
     override fun showWeatherInfo(list: MutableList<HeWeatherForecast.HeWeather6Bean.DailyForecastBean>) {
         list[0].apply {
             weatherTv.text = cond_txt_d
-            val tmp = (tmp_min.toInt() + tmp_max.toInt()) / 2
+            val tmp = (tmp_min.toInt() + tmp_max.toInt()) / 2 //因为api里没有当前的温度，只有最高，最低温度
             tempTv.text = tmp.toString()
-            cityWeather.tmp = tmp.toString()
-            cityWeather.weather=cond_txt_d
-            cityWeather.save()
+            cityWeather.apply {
+                cityWeather.tmp = tmp.toString()
+                weather = cond_txt_d
+                save()
+            }
             shareData = ShareData(countyName, "$cond_txt_d", "$tmp℃", "",
                     "今天:　${getWeek(date)}  $cond_txt_d  $tmp_min~$tmp_max℃",
                     "明天: ${getWeek(list[1].date)} ${list[1].cond_txt_d}  ${list[1].tmp_min}~${list[1].tmp_max}℃")
         }
         recyclerView.apply {
-            layoutManager = LinearLayoutManager(activity)
-                    .apply { orientation = LinearLayoutManager.HORIZONTAL }
+            layoutManager = LinearLayoutManager(activity).apply {
+                orientation = LinearLayoutManager.HORIZONTAL
+            }
             adapter = object : BaseQuickAdapter<HeWeatherForecast.HeWeather6Bean.DailyForecastBean, BaseViewHolder>
             (R.layout.item_forecast, list) {
                 override fun convert(helper: BaseViewHolder, item: HeWeatherForecast.HeWeather6Bean.DailyForecastBean) {
-                    with(helper) {
-                        with(item) {
+                    helper.apply {
+                        item.apply {
                             val time = if (date == getCurrentTime()) "今天" else getWeek(date)
                             setText(R.id.forecast_time, time)
                             setText(R.id.forecast_temp, "$tmp_max°/$tmp_min°")
@@ -130,14 +135,14 @@ private val countyName: String by lazy { (arguments!!.getSerializable(ITEM) as C
 
 
     override fun showRefresh(heWeather6Bean: HeWeatherNow.HeWeather6Bean) {
-        swipeLayout.isRefreshing=false
+        swipeLayout.isRefreshing = false
         with(heWeather6Bean.now) {
             weatherTv.text = cond_txt
             tempTv.text = tmp
-            cityWeather?.let {
-                it.tmp = tmp
-                it.weather = cond_txt
-                it.save()
+            cityWeather.apply {
+                tmp = heWeather6Bean.now.tmp
+                weather = cond_txt
+                save()
             }
             shareData?.apply {
                 weather = cond_txt
@@ -146,10 +151,6 @@ private val countyName: String by lazy { (arguments!!.getSerializable(ITEM) as C
         }
     }
 
-    /*外部调用*/
-    fun refresh() {
-        presenter.refresh(countyName)
-    }
 
     companion object {
         private val ITEM = "item"
@@ -158,11 +159,10 @@ private val countyName: String by lazy { (arguments!!.getSerializable(ITEM) as C
          * @param id 代表当前fragment在viewPager中的位置
          */
         fun newInstance(cityWeather: CityWeather, id: Int): WeatherFragment = WeatherFragment().apply {
-            val arg = Bundle()
-                    .apply {
-                        putSerializable(ITEM, cityWeather)
-                        putInt(ID, id)
-                    }
+            val arg = Bundle().apply {
+                putSerializable(ITEM, cityWeather)
+                putInt(ID, id)
+            }
             arguments = arg
         }
 

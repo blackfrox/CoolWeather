@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <Preference android:key="pref_theme"
+        android:title="主题色"/>
+
+    <Preference
+        android:key="pref_clean_cache"
+        android:title="清除缓存"/>
+</PreferenceScreen>

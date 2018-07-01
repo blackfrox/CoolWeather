@@ -10,18 +10,11 @@ import okhttp3.Response
 object HttpUtil {
 
     private val client=OkHttpClient()
-    //callback 方法在子线程中,
-    //如需更新UI,需要切换到UI线程
+    //callback 方法回调在子线程中,
+    //如需更新UI,需要切换到UI线程(Activity.runOnUiThread())
     fun sendOkHttpRequest(url: String, callback: okhttp3.Callback){
         val request=Request.Builder().url(url).build()
         client.newCall(request).enqueue(callback)
     }
 
-    //报错,必须在子线程才能用
-//    fun getResponse(url:String): Response?{
-//        val request=Request.Builder()
-//                .url(url)
-//                .build()
-//        return client.newCall(request).execute()
-//    }
 }
