@@ -15,7 +15,7 @@ v1.0.2: 添加主题切换，清除缓存功能
 
 <a href="screenshots/01.jpg"><img src="screenshots/01.jpg" width="30%"/></a><a href="screenshots/02.jpg"><img src="screenshots/02.jpg" width="30%"/></a><a href="screenshots/03.jpg"><img src="screenshots/03.jpg" width="30%"/></a>
 
-<a href="screenshots/04.jpg"><img src="screenshots/04.jpg" width="30%"/></a> <a href="screenshots/05.jpg"><img src="screenshots/05.jpg" width="30%"/></a>
+<a href="screenshots/04.jpg"><img src="screenshots/04.jpg" width="30%"/></a> <a href="screenshots/05.jpg"><img src="screenshots/05.jpg" width="30%"/></a><a href="screenshots/06.jpg"><img src="screenshots/06.jpg" width="30%"/></a><a href="screenshots/07.jpg"><img src="screenshots/07.jpg" width="30%"/></a>
 
 ## Thanks to the open source project
 
