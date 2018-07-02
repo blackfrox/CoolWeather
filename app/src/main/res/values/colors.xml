@@ -19,7 +19,7 @@
         <item>@color/niagara</item>
     </array>
 
-    <color name="lapis_blue">#014284</color>
+    <color name="lapis_blue">#ff33b5e5</color>
     <color name="pale_dogwood">#ECCAC0</color>
     <color name="greenery">#7DA743</color>
     <color name="primrose_yellow">#F1C84C</color>

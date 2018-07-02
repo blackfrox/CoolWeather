@@ -27,9 +27,9 @@
 
 
     <style name="LapisBlueTheme" parent="BaseTheme">
-        <item name="colorPrimary">@color/lapis_blue</item>
-        <item name="colorPrimaryDark">@color/lapis_blue</item>
-        <item name="colorAccent">@color/lapis_blue</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
 
     <style name="PaleDogwoodTheme" parent="BaseTheme">
