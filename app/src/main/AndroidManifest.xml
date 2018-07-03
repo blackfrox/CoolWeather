@@ -56,11 +56,13 @@
 
         <activity
             android:name=".ui.main.MainActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
+
             </intent-filter>
         </activity>
         <activity
@@ -77,16 +79,27 @@
             android:label="关于"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".ui.setting.SettingActivity"
-                  android:launchMode="singleTop"
-                  android:screenOrientation="portrait">
+        <activity
+            android:name=".ui.setting.SettingActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait">
         </activity>
+
         <service
             android:name=".AutoUpdateService"
             android:enabled="true"
             android:exported="false">
         </service>
 
+        <receiver android:name=".ui.NewAppWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/new_app_widget_info"/>
+        </receiver>
 
     </application>
 

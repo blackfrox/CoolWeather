@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.Toolbar
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.text.TextUtils
 import android.view.Menu
@@ -24,7 +25,7 @@ import com.example.weather.ui.choose.ChooseActivity
 import com.example.weather.ui.main.MainActivity
 import com.example.weather.util.initToolbar
 import kotlinx.android.synthetic.main.activity_city_manager.*
-import kotlinx.android.synthetic.main.toolbar.*
+//import kotlinx.android.synthetic.main.toolbar.*
 import org.jetbrains.anko.toast
 import org.litepal.crud.DataSupport
 
@@ -41,9 +42,15 @@ class CityManagerActivity : BaseActivity() {
     private lateinit var list: List<CityWeather>
     private var dataChanged = false
     private var selectedPosition = -1
-    override fun initView(savedInstanceState: Bundle?) {
-        initToolbar(toolbar)
+    private val ADD_ITEM = 1
 
+    override fun initView(savedInstanceState: Bundle?) {
+        initToolbar(toolbar as Toolbar)
+
+        fab.setOnClickListener {
+            val intent = Intent(this@CityManagerActivity, ChooseActivity::class.java)
+            startActivityForResult(intent, ADD_ITEM)
+        }
         list = DataSupport.order("countyId").find(CityWeather::class.java)
         if (list.size <= 0)
             return
@@ -134,7 +141,6 @@ class CityManagerActivity : BaseActivity() {
                 }
             })
 
-            //点击跳转有问题，以后再说
             setOnItemClickListener { adapter, view, position ->
                 selectedPosition = position
                 val intent = Intent().apply {
@@ -176,23 +182,6 @@ class CityManagerActivity : BaseActivity() {
         }
         setResult(Activity.RESULT_OK, intent)
         super.onBackPressed()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_city_manager, menu)
-        return true
-    }
-
-    private val ADD_ITEM = 1
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
-            R.id.menu_add -> {
-                val intent = Intent(this@CityManagerActivity, ChooseActivity::class.java)
-                startActivityForResult(intent, ADD_ITEM)
-            }
-            else -> return super.onOptionsItemSelected(item)
-        }
-        return true
     }
 
     //todo: 一开始以为是RxBus导致的闪退，所以使用startActivityForResult代替，后续可以修改

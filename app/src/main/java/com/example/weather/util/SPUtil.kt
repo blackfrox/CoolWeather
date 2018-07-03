@@ -3,6 +3,7 @@ package com.example.wanandroidtest
 import android.content.Context
 import android.content.SharedPreferences
 import com.example.weather.MyApp
+import com.example.weather.other.db.CityWeather
 
 /**
  * Created by Administrator on 2018/4/17 0017.
@@ -12,8 +13,6 @@ class SPUtil{
         private const val SP_NAME="sp_name"
         val instance: SharedPreferences by lazy { MyApp.instance.getSharedPreferences(SP_NAME,Context.MODE_PRIVATE) }
     }
-
-
 
 }
 

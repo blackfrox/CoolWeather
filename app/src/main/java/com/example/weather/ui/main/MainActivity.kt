@@ -2,6 +2,7 @@ package com.example.weather.ui.main
 
 import android.Manifest
 import android.app.Activity
+import android.appwidget.AppWidgetManager
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -12,6 +13,7 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.view.Gravity
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
+import android.widget.RemoteViews
 import com.example.weather.R
 import com.example.weather.base.BaseActivity
 import com.example.weather.mvp.contract.MainContract
@@ -107,8 +109,8 @@ class MainActivity : BaseActivity(), MainContract.View {
         }
 
         viewPager.apply {
-//            setAnimation(alphaAnimation)
-//            offscreenPageLimit = mAdapter.count//设置预加载的页数
+            //            setAnimation(alphaAnimation)
+            offscreenPageLimit = mAdapter.count//设置预加载的页数
             adapter = mAdapter
         }
         pageTitle.setViewPager(viewPager)
@@ -118,7 +120,7 @@ class MainActivity : BaseActivity(), MainContract.View {
         navView.setNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.nav_city_manager -> startActivityForResult(Intent(this@MainActivity, CityManagerActivity::class.java), 1)
-                R.id.nav_settings -> startActivity(Intent(this@MainActivity,SettingActivity::class.java))
+                R.id.nav_settings -> startActivity(Intent(this@MainActivity, SettingActivity::class.java))
                 R.id.nav_about -> startActivity(Intent(this@MainActivity, AboutActivity::class.java))
             }
             drawer_layout.closeDrawer(Gravity.START)
@@ -163,6 +165,8 @@ class MainActivity : BaseActivity(), MainContract.View {
     private val fragments by lazy { arrayListOf<Fragment>() }
     private val titles by lazy { arrayListOf<String>() }
     private lateinit var mAdapter: FragmentPagerAdapter
+//    val currentId: Int=viewPager.currentItem
+
     //因为该方法会重复调用，记得将其中的所有list集合清空
     override fun initFragment(list: MutableList<CityWeather>, selectedItem: Int) {
         //TODO: 测试用
@@ -191,8 +195,8 @@ class MainActivity : BaseActivity(), MainContract.View {
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onThemeChangedEvent(event: ThemeChangedEvent){
-       this@MainActivity.recreate()
+    fun onThemeChangedEvent(event: ThemeChangedEvent) {
+        this@MainActivity.recreate()
 //        initTheme()
 //        switchTheme(event.themeColor)
     }
@@ -201,6 +205,7 @@ class MainActivity : BaseActivity(), MainContract.View {
 //        recreate()
 //        initTheme()
     }
+
     override fun showErrorMessage(message: String) {
         toast(message)
     }
@@ -214,6 +219,22 @@ class MainActivity : BaseActivity(), MainContract.View {
                 val selectedItem = data.getIntExtra(SELECTED_ITEM, -1)
                 presenter.refresh(selectedItem)
             }
+        }
+    }
+
+    fun updateAppWidget() {
+        //1 First, get the App Widget ID from the Intent that launched the Activity:
+        val extras = intent.extras
+        if (extras != null) {
+            val mAppWidgetId = extras.getInt(
+                    AppWidgetManager.EXTRA_APPWIDGET_ID,
+                    AppWidgetManager.INVALID_APPWIDGET_ID)
+            //2  Perform your App Widget configuration.
+            //3 When the configuration is complete, get an instance of the AppWidgetManager by calling getInstance(Context):
+            val appWidManager = AppWidgetManager.getInstance(this)
+            //4 Update the App Widget with a RemoteViews layout by calling updateAppWidget(int, RemoteViews):
+            val views = RemoteViews(this.getPackageName(), R.layout.new_app_widget)
+            appWidManager.updateAppWidget(mAppWidgetId, views)
         }
     }
 }

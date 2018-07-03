@@ -13,12 +13,13 @@ android {
         minSdkVersion 15
         targetSdkVersion 27
         versionCode 1
-        versionName "1.0.2"
+        versionName "1.0.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true //解决bug:  Can’t process attribute android:fillColor
     }
     buildTypes {
         release {
+            //todo: 混淆代码报错
             minifyEnabled false
 //            zipAlignEnabled true
 //            // 移除无用的resource文件
@@ -82,6 +83,8 @@ dependencies {
 //    implementation 'org.greenrobot:eventbus:3.0.0'
     implementation 'org.greenrobot:eventbus:3.1.1'
     kapt 'org.greenrobot:eventbus-annotation-processor:3.1.1'  //eventBus在kotlin中与Java的区别
+    implementation "com.github.githubwing:ByeBurger:$rootProject.ByeBurgerVersion" //bottomNavView
+
 }
 
 kapt {

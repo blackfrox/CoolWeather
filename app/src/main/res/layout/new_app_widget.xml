@@ -1,0 +1,62 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/widget_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent">
+
+    <ImageView
+        android:id="@+id/img_weather"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:src="@mipmap/ic_launcher"
+        android:scaleType="centerCrop"/>
+
+    <TextView
+        android:id="@+id/tv_county_name"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:text="城市名"
+        android:textColor="#ffffff"
+        android:layout_alignTop="@+id/img_weather"
+        android:layout_toRightOf="@+id/img_weather"
+        android:layout_marginTop="@dimen/dp_8"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/tv_weather"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="多云"
+        android:textColor="#ffffff"
+        android:gravity="center"
+        android:layout_alignBottom="@+id/img_weather"
+        android:layout_toRightOf="@+id/img_weather"
+       android:layout_marginLeft="@dimen/dp_8"/>
+
+    <TextView
+        android:id="@+id/tv_tmp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="35°C"
+        android:textColor="#ffffff"
+        android:layout_alignBottom="@+id/img_weather"
+        android:layout_toRightOf="@+id/tv_weather"
+       android:layout_marginLeft="@dimen/dp_8"/>
+    <!--<TextView-->
+        <!--android:id="@+id/appwidget_text"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_centerVertical="true"-->
+        <!--android:layout_margin="8dp"-->
+        <!--android:background="#09C"-->
+        <!--android:contentDescription="@string/appwidget_text"-->
+        <!--android:text="@string/appwidget_text"-->
+        <!--android:textColor="#ffffff"-->
+        <!--android:textSize="24sp"-->
+        <!--android:textStyle="bold|italic"/>-->
+
+</RelativeLayout>

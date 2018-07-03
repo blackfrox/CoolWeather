@@ -47,4 +47,6 @@ ext{
     ankoVersion = '0.10.1'
     recyclerViewAdapterVersion = '2.9.40'
     litepalVersion = '1.6.1'
+    ByeBurgerVersion = '1.2.3'
+
 }

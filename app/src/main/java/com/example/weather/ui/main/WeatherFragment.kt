@@ -1,6 +1,11 @@
 package com.example.weather.ui.main
 
 import android.annotation.SuppressLint
+import android.app.PendingIntent
+import android.appwidget.AppWidgetManager
+import android.content.ComponentName
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.text.TextUtils
@@ -16,6 +21,7 @@ import com.example.weather.network.gson.HeLifeStyle
 import com.example.weather.network.gson.HeWeatherForecast
 import com.example.weather.network.gson.HeWeatherNow
 import com.example.weather.other.data.ShareData
+import com.example.weather.ui.NewAppWidget
 import com.example.weather.util.checkNetWork
 import com.example.weather.util.getCurrentTime
 import com.example.weather.util.getWeek
@@ -24,6 +30,10 @@ import kotlinx.android.synthetic.main.fragment_weather.*
 import kotlinx.android.synthetic.main.suggestion.*
 import org.jetbrains.anko.support.v4.act
 import org.jetbrains.anko.support.v4.toast
+import android.content.Intent.getIntent
+import android.widget.RemoteViews
+import org.litepal.crud.DataSupport
+
 
 /**
  *
@@ -40,10 +50,10 @@ class WeatherFragment : BaseFragment(), WeatherContract.View {
         return R.layout.fragment_weather
     }
 
-    override lateinit var presenter: WeatherContract.Presenter
+    override  var presenter: WeatherContract.Presenter=WeatherPresenter(this@WeatherFragment)
 
-    private  var cityWeather: CityWeather = CityWeather()
-    private  var countyName: String = ""
+    private var cityWeather: CityWeather = CityWeather()
+    private var countyName: String = ""
     var shareData: ShareData? = null //作为分享时候的数据
 
     override fun initView(savedInstanceState: Bundle?) {
@@ -54,7 +64,7 @@ class WeatherFragment : BaseFragment(), WeatherContract.View {
         if (TextUtils.isEmpty(countyName))
             return
 
-        WeatherPresenter(this@WeatherFragment)
+
         presenter.getWeather(countyName)
         cityWeather.countyName = countyName
 
@@ -149,6 +159,12 @@ class WeatherFragment : BaseFragment(), WeatherContract.View {
                 this@apply.tmp = heWeather6Bean.now.tmp
             }
         }
+        val countyName=DataSupport.findFirst(CityWeather::class.java).countyName
+
+        if (activity is MainActivity &&  countyName.equals(cityWeather.countyName)) {
+                (activity as MainActivity).updateAppWidget()
+        }
+
     }
 
 

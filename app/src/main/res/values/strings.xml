@@ -9,5 +9,7 @@
     <string name="theme">主题</string>
     <string name="done">确定</string>
     <string name="cancel">取消</string>
-    <string name="app_version">v1.0.2</string>
+    <string name="app_version">v1.0.3</string>
+
+
 </resources>
