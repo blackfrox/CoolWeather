@@ -8,8 +8,8 @@ mvp参考: 官方的mvp项目(https://github.com/googlesamples/android-architect
 天气UI界面可以参考(PS:　暂时还没写进去，打算学习自定义View的时候再加入项目里): Pure天气（https://github.com/Mixiaoxiao/Weather） 和 （https://github.com/li-yu/FakeWeather）
 
 v1.0.1: 增加刷新功能
-v1.0.2: 添加主题切换，清除缓存功能
-点击item跳转功能
+v1.0.2: 添加主题切换，清除缓存功能，点击item跳转功能
+V1.0.3 : 增加了桌面小部件
 
 ## Screenshots
 
