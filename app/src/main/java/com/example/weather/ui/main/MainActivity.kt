@@ -24,7 +24,6 @@ import com.example.weather.other.db.CityWeather
 import com.example.weather.ui.AboutActivity
 import com.example.weather.ui.citymanager.CityManagerActivity
 import com.example.weather.ui.setting.SettingActivity
-import com.example.weather.util.LogUtil
 import com.example.weather.util.ShareUtils
 import com.example.weather.util.StatusBarUtil
 import com.example.weather.util.WeatherUtil
@@ -50,7 +49,7 @@ class MainActivity : BaseActivity(), MainContract.View {
     override fun onDestroy() {
         super.onDestroy()
         presenter.onDestroy()
-        EventBus.getDefault().unregister(this)
+//        EventBus.getDefault().unregister(this)
 
     }
 
@@ -59,10 +58,10 @@ class MainActivity : BaseActivity(), MainContract.View {
     }
 
     override fun initView(savedInstanceState: Bundle?) {
-        EventBus.getDefault().register(this)
+//        EventBus.getDefault().register(this)
 
         //todo: 测试用，否则注释掉
-//        startActivity(Intent(this,SettingActivity::class.java))
+//        startActivity(Intent(this,CityManagerActivity::class.java))
         initToolbar()
         initNavView()
         initViewPager()
@@ -168,38 +167,35 @@ class MainActivity : BaseActivity(), MainContract.View {
 //    val currentId: Int=viewPager.currentItem
 
     //因为该方法会重复调用，记得将其中的所有list集合清空
-    override fun initFragment(list: MutableList<CityWeather>, selectedItem: Int) {
+    override fun initFragment(list: MutableList<CityWeather>,selectedPosition: Int,isRefresh: Boolean) {
         //TODO: 测试用
 //        if (list.size <= 1 && list.size > 0) {
 //            list.add(list[0])
 //            CityWeather("嵊州市")
 //              .save()
 //        }
-        if (fragments.size > 0)
-            fragments.clear()
+
+        if (fragments.size > 0) fragments.clear()
         for ((i, item) in list.withIndex()) {
             fragments.add(WeatherFragment.newInstance(item, i))
         }
+        mAdapter.notifyDataSetChanged()
+
         if (titles.size > 0) titles.clear()
         list.forEach { titles.add(it.countyName) }
-        mAdapter.notifyDataSetChanged()
-//        viewPager.offscreenPageLimit = mAdapter.getCount()
+        viewPager.offscreenPageLimit = mAdapter.getCount()
         pageTitle.notifyDataSetChanged()
-        if (selectedItem > -1) {
-            viewPager.currentItem = selectedItem
-            //            pageTitle.setCurrentItem(selectedItem)
-            LogUtil.d("MainActivity", "selectedItem: $selectedItem")
+        if (selectedPosition>-1){
+            startFragment(selectedPosition)
         }
+    }
 
+    override fun startFragment(selectedPosition: Int) {
+        viewPager.currentItem = selectedPosition
+//        pageTitle.notifyDataSetChanged()
     }
 
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onThemeChangedEvent(event: ThemeChangedEvent) {
-        this@MainActivity.recreate()
-//        initTheme()
-//        switchTheme(event.themeColor)
-    }
 
     override fun showThemeChange() {
 //        recreate()
@@ -215,9 +211,9 @@ class MainActivity : BaseActivity(), MainContract.View {
         when (resultCode) {
             Activity.RESULT_OK -> {
 
-//                val boolean=data.getBooleanExtra(CHANGE,false)
+                val boolean=data.getBooleanExtra(CHANGE,false)
                 val selectedItem = data.getIntExtra(SELECTED_ITEM, -1)
-                presenter.refresh(selectedItem)
+                presenter.refresh(selectedItem,boolean)
             }
         }
     }

@@ -30,53 +30,74 @@
 #-keep public class * extends android.app.Service # 保持哪些类不被混淆
 #-keep public class * extends android.content.BroadcastReceiver # 保持哪些类不被混淆
 #-keep public class * extends android.content.ContentProvider # 保持哪些类不被混淆
-##-keep public class * extends android.app.backup.BackupAgentHelper # 保持哪些类不被混淆
+#-keep public class * extends android.app.backup.BackupAgentHelper # 保持哪些类不被混淆
 #-keep public class * extends android.preference.Preference # 保持哪些类不被混淆
-##-keep public class com.android.vending.licensing.ILicensingService # 保持哪些类不被混淆
-##-keepclasseswithmembernames class * {# 保持 native 方法不被混淆 native <methods>; }
-##}
-#-dontwarn com.baidu.**
-#-dontwarn com.tencent.bugly.**
-#-keep public class com.tencent.bugly.**{*;}
-#
-### Retain generic type information for use by reflection by converters and adapters.
-##-keepattributes Signature
-### Retain service method parameters.
-##-keepclassmembers,allowshrinking,allowobfuscation interface * {
-##    @retrofit2.http.* <methods>;
-##}
-### Ignore annotation used for build tooling.
-##-dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
-#
-#-keep public class * implements com.bumptech.glide.module.GlideModule
-#-keep public class * extends com.bumptech.glide.module.AppGlideModule
-#-keep public enum com.bumptech.glide.load.ImageHeaderParser$** {
-#  **[] $VALUES;
-#  public *;
+#-keep public class com.android.vending.licensing.ILicensingService # 保持哪些类不被混淆
+#-keepclasseswithmembernames class * {# 保持 native 方法不被混淆 native <methods>;
 #}
+##-keep class android.** {	*;}
+##-ignorewarnings
+#-keep class com.google.android.gms.** { *; }
+#-dontwarn com.google.android.gms.**
 #
-## for DexGuard only
-##-keepresourcexmlelements manifest/application/meta-data@value=GlideModule
-#
-#-keep class com.chad.library.adapter.** {
-#*;
-#}
-#-keep public class * extends com.chad.library.adapter.base.BaseQuickAdapter
-#-keep public class * extends com.chad.library.adapter.base.BaseViewHolder
-#-keepclassmembers  class **$** extends com.chad.library.adapter.base.BaseViewHolder {
-#     <init>(...);
-#}
+-keep class *
 
-#-keepattributes *Annotation*
-#-keepclassmembers class ** {
-#    @org.greenrobot.eventbus.Subscribe <methods>;
-#}
-#-keep enum org.greenrobot.eventbus.ThreadMode { *; }
-#
-## Only required if you use AsyncExecutor
-#-keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent {
-#    <init>(java.lang.Throwable);
-#}
--dontwarn org.apache.http.**
+-keepnames class *
 
+-keepclassmembers class *
+-keep class * {
+    public private *;
+}
 
+# Retain generic type information for use by reflection by converters and adapters.
+-keepattributes Signature
+
+# Retain service method parameters when optimizing.
+-keepclassmembers,allowshrinking,allowobfuscation interface * {
+    @retrofit2.http.* <methods>;
+}
+
+# Ignore annotation used for build tooling.
+-dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
+
+# Ignore JSR 305 annotations for embedding nullability information.
+-dontwarn javax.annotation.**
+
+                       # litepal
+-keep class org.litepal.** {
+    *;
+}
+
+-keep class * extends org.litepal.crud.DataSupport {
+    *;
+}
+
+-keep class * extends org.litepal.crud.LitePalSupport {
+    *;
+}
+
+                   #bugly
+-dontwarn com.tencent.bugly.**
+-keep public class com.tencent.bugly.**{*;}
+
+                    #recyclerAdapterHelper
+-keep class com.chad.library.adapter.** {
+*;
+}
+-keep public class * extends com.chad.library.adapter.base.BaseQuickAdapter
+-keep public class * extends com.chad.library.adapter.base.BaseViewHolder
+-keepclassmembers  class **$** extends com.chad.library.adapter.base.BaseViewHolder {
+     <init>(...);
+}
+
+                #eventBus
+-keepattributes *Annotation*
+-keepclassmembers class * {
+    @org.greenrobot.eventbus.Subscribe <methods>;
+}
+-keep enum org.greenrobot.eventbus.ThreadMode { *; }
+
+# Only required if you use AsyncExecutor
+-keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent {
+    <init>(java.lang.Throwable);
+}

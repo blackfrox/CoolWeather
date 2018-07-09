@@ -23,8 +23,17 @@ import com.example.weather.other.db.CityWeather
 import com.example.weather.ui.adapter.CityManagerAdapter
 import com.example.weather.ui.choose.ChooseActivity
 import com.example.weather.ui.main.MainActivity
+import com.example.weather.util.LogUtil
 import com.example.weather.util.initToolbar
+import com.lljjcoder.style.citylist.CityListSelectActivity
+import com.lljjcoder.style.citylist.bean.CityInfoBean
+import com.zaaach.citypicker.CityPicker
+import com.zaaach.citypicker.adapter.OnPickListener
+import com.zaaach.citypicker.model.City
+import com.zaaach.citypicker.model.LocateState
+import com.zaaach.citypicker.model.LocatedCity
 import kotlinx.android.synthetic.main.activity_city_manager.*
+import org.jetbrains.anko.longToast
 //import kotlinx.android.synthetic.main.toolbar.*
 import org.jetbrains.anko.toast
 import org.litepal.crud.DataSupport
@@ -46,10 +55,15 @@ class CityManagerActivity : BaseActivity() {
 
     override fun initView(savedInstanceState: Bundle?) {
         initToolbar(toolbar as Toolbar)
+        //TODO: 最后记得改回来
+//        val item=DataSupport.findFirst(CityWeather::class.java)
 
         fab.setOnClickListener {
-            val intent = Intent(this@CityManagerActivity, ChooseActivity::class.java)
-            startActivityForResult(intent, ADD_ITEM)
+            //            val intent = Intent(this@CityManagerActivity, ChooseActivity::class.java)
+//            startActivityForResult(intent, ADD_ITEM)
+
+            val intent = Intent(this@CityManagerActivity, CityListSelectActivity::class.java)
+            startActivityForResult(intent, CityListSelectActivity.CITY_SELECT_RESULT_FRAG)
         }
         list = DataSupport.order("countyId").find(CityWeather::class.java)
         if (list.size <= 0)
@@ -106,19 +120,21 @@ class CityManagerActivity : BaseActivity() {
             setOnItemSwipeListener(object : OnItemSwipeListener {
                 //1 删除数据库中的数据 2 弹出提示  3 更新adapter
                 override fun onItemSwiped(viewHolder: RecyclerView.ViewHolder?, pos: Int) {
-                    Snackbar.make(recyclerView, "删除成功！", Snackbar.LENGTH_LONG)
-//                            .apply {
 //                    val deleteItem = mAdapter.data[pos]
-                            //数据库保存失败
-//                                setAction("撤销"){
-//                                    CityWeather(deleteItem.countyName,pos)
-//                                            .save()
-//                                    mAdapter.addData(pos,deleteItem)
-//                                    mAdapter.notifyItemInserted(pos)
+//                    val deletePos=pos
+//                    Snackbar.make(fab, "删除成功！", Snackbar.LENGTH_LONG)
+//                            .apply {
+////                            数据库保存失败
+//                                setAction("撤销") {
+////                                    CityWeather(deleteItem.countyName,deletePos)
+////                                            .save()
 //                                    deleteItem.save() //重新保存
+//                                    mAdapter.addData(deletePos, deleteItem)
+////                                    mAdapter.notifyItemInserted(deletePos)
 //                                }
 //                            }
-                            .show()
+//                            .show()
+                    toast("删除成功！")
                     //原来数据库的删除操作需要放在mAdapter之前，不然会报错IndexOutException
                     DataSupport.deleteAll(CityWeather::class.java, "countyId = ?", mAdapter.data[pos].countyId.toString())
                     mAdapter.apply {
@@ -155,14 +171,10 @@ class CityManagerActivity : BaseActivity() {
     private fun addData(countyName: String) {
         CityWeather(countyName, mAdapter.data.size)
                 .apply {
-                    if (!mAdapter.data.contains(this)) {
-                        save()
-                        mAdapter.addData(this)
-                        mAdapter.notifyDataSetChanged()
-                        dataChanged = true
-                    } else {
-                        toast("重复的城市！")
-                    }
+                    save()
+                    mAdapter.addData(this)
+                    mAdapter.notifyDataSetChanged()
+                    dataChanged = true
                 }
     }
 
@@ -188,14 +200,48 @@ class CityManagerActivity : BaseActivity() {
     //mAdapter的更新需要放在当前Activity/Fragment的处于用户可操作状态才能进行,否则会崩溃(crash)
     //解决办法是放在onBackPress()方法中去通知上一个Activity处理更新操作
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        when (resultCode) {
-            Activity.RESULT_OK -> {
-                val countyName = data?.getStringExtra("item")
-                if (!TextUtils.isEmpty(countyName)) {
-                    addData(countyName!!)
+        when (requestCode) {
+            CityListSelectActivity.CITY_SELECT_RESULT_FRAG -> {
+                when (resultCode) {
+                    Activity.RESULT_OK -> {
+                        if (data == null)
+                            return
+                        val bundle = data.extras
+                        val cityInfoBean = bundle.getParcelable<CityInfoBean>("cityinfo")
+                        when {
+                            cityInfoBean == null -> return
+                            TextUtils.isEmpty(cityInfoBean.name) -> {
+                                toast("暂无该城市天气信息")
+                                return
+                            }
+                            else -> {
+                                mAdapter.data.forEach {
+                                    if (it.countyName.equals(cityInfoBean.name)) {
+                                        toast("重复的城市!")
+                                        return
+                                    }
+                                }
+                            }
+                        }
+
+                        LogUtil.d("CityManagerActivity", "cityName::::::${cityInfoBean.name}")
+                        addData(cityInfoBean.name)
+                    }
+
                 }
             }
+            else -> {
+                when (resultCode) {
+                    Activity.RESULT_OK -> {
+//                val countyName = data?.getStringExtra("item")
+//                if (!TextUtils.isEmpty(countyName)) {
+//                    addData(countyName!!)
+//                }
 
+                    }
+
+                }
+            }
         }
     }
 

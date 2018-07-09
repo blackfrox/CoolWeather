@@ -10,13 +10,14 @@ interface MainContract {
     interface View: BaseView<Presenter>{
         fun showErrorMessage(message: String)
         //初始化
-        fun initFragment(list: MutableList<CityWeather>,selectedItem: Int = -1)
+        fun initFragment(list: MutableList<CityWeather>,selectedPosition: Int = -1,isRefresh: Boolean=false)
 
         fun showThemeChange()
+        fun startFragment(selectedPosition: Int)
     }
 
     interface Presenter: BasePresenter{
         fun start(bdLocation: BDLocation) {}
-        fun refresh(selectedItem: Int)
+        fun refresh(selectedItem: Int, isRefresh: Boolean)
     }
 }

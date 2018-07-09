@@ -6,7 +6,10 @@
         <!--<item name="colorPrimary">@color/colorPrimary</item>-->
         <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
         <!--<item name="colorAccent">@color/colorAccent</item>-->
-        <item name="android:windowDisablePreview">true</item> //解决白屏问题(简书就是用的这种方法)
+        //解决白屏的两种方法
+        <!--<item name="android:windowIsTranslucent">true</item>-->
+        <!--<item name="android:windowNoTitle">true</item>-->
+        <!--<item name="android:windowDisablePreview">true</item> //解决白屏问题(简书就是用的这种方法)-->
     </style>
 
     <style name="AppTheme" parent="BaseTheme">

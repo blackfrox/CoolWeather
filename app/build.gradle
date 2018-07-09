@@ -21,8 +21,6 @@ android {
         release {
             //todo: 混淆代码报错
             minifyEnabled false
-//            zipAlignEnabled true
-//            // 移除无用的resource文件
 //            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -66,12 +64,13 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxandroidVersion"
     implementation "com.jakewharton.rxbinding2:rxbinding:$rootProject.rxbindingVersion"
     implementation "com.tbruyelle.rxpermissions2:rxpermissions:$rootProject.rxpermissionsVersion"
+    implementation 'com.github.ReactiveX:RxKotlin:1.x-SNAPSHOT'
+
 //    implementation 'com.trello.rxlifecycle2:rxlifecycle-android-lifecycle-kotlin:2.2.1'
 
     //other
     implementation "org.litepal.android:core:$rootProject.litepalVersion"
     implementation 'com.tencent.bugly:crashreport:latest.release'
-    //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.2.0
     //    implementation 'me.yokeyword:fragmentation:1.3.3'
     implementation "com.github.CymChad:BaseRecyclerViewAdapterHelper:$rootProject.recyclerViewAdapterVersion"
     //noinspection GradleDependency
@@ -84,6 +83,9 @@ dependencies {
     implementation 'org.greenrobot:eventbus:3.1.1'
     kapt 'org.greenrobot:eventbus-annotation-processor:3.1.1'  //eventBus在kotlin中与Java的区别
     implementation "com.github.githubwing:ByeBurger:$rootProject.ByeBurgerVersion" //bottomNavView
+    implementation 'com.zaaach:citypicker:2.0.2'
+    implementation 'liji.library.dev:citypickerview:3.0.0'
+
 
 }
 

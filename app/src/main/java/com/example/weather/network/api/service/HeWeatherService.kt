@@ -4,6 +4,7 @@ import com.example.weather.network.gson.*
 import io.reactivex.Observable
 import retrofit2.http.GET
 import retrofit2.http.Query
+import retrofit2.http.Url
 
 interface HeWeatherService {
 
@@ -26,6 +27,15 @@ interface HeWeatherService {
     fun getWeatherNow(@Query("location") location: String,
                       @Query("key") key: String = "df7cda9693794b85a9ffc8fdb781230c")
             : Observable<HeWeatherNow>
+
+    //热门城市列表
+//    https://search.heweather.com/top?group=world&key=xxx&number=9
+    @GET("/top?group=world")
+    fun getHotCity(@Query("number") number: Int = 9,
+                   @Query("key") key: String = "df7cda9693794b85a9ffc8fdb781230c",
+                   @Url url: String="https://search.heweather.com/")
+    :Observable<HeHotCity>
+
 
     //搜索城市
     //https://search.heweather.com/find?location=嵊州市&key=df7cda9693794b85a9ffc8fdb781230c
