@@ -23,7 +23,7 @@ class AboutActivity : BaseActivity() {
         }
         //分享
         btn_share_app.setOnClickListener {
-            ShareUtils.shareText(this,"来不及了，快上车！ https://github.com/breakfrox/CoolWeather","分享到")
+            ShareUtils.shareText(this,getString(R.string.share_message),"分享到")
         }
         //评论
         btn_comment.setOnClickListener {

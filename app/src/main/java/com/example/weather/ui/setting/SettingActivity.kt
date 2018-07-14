@@ -15,7 +15,6 @@ import com.example.weather.util.SettingsUtil
 import com.example.weather.util.ThemeUtil
 import com.example.weather.util.initToolbar
 import kotlinx.android.synthetic.main.toolbar.*
-import org.greenrobot.eventbus.EventBus
 
 class SettingActivity : BaseActivity()
         , ColorChooserDialog.ColorCallback
@@ -39,8 +38,8 @@ class SettingActivity : BaseActivity()
             window.statusBarColor = selectedColor
         switchTheme(selectedColor)
         fragmentManager.beginTransaction().replace(R.id.container, SettingFragment()).commit()
-        EventBus.getDefault().post(ThemeChangedEvent(selectedColor))
-//        RxBus.instance.post(ThemeChangedEvent(selectedColor))
+//        EventBus.getDefault().post(ThemeChangedEvent(selectedColor))
+        RxBus.getDefault().post(ThemeChangedEvent(selectedColor))
     }
 
 

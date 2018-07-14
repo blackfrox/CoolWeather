@@ -10,6 +10,7 @@
     <string name="done">确定</string>
     <string name="cancel">取消</string>
     <string name="app_version">v1.0.3</string>
+    <string name="share_message">来不及了，快上车！ https://github.com/blackfrox/CoolWeather/tree/master/app/release/app-release.apk</string>
 
 
 </resources>

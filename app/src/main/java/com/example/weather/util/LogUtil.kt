@@ -20,7 +20,7 @@ object LogUtil {
     val ERROR=5
     val NOTHING=6
 
-    val level= VERBOSE
+    val level= NOTHING
 
     fun v(tag: String,msg: String){
         if (level<= VERBOSE)

@@ -4,7 +4,7 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
-apply plugin: 'kotlin-kapt'
+//apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 27
@@ -16,13 +16,22 @@ android {
         versionName "1.0.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true //解决bug:  Can’t process attribute android:fillColor
+        multiDexEnabled true  //解决方法数限制
     }
     buildTypes {
         release {
-            //todo: 混淆代码报错
-            minifyEnabled false
-//            shrinkResources true
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+//            开启代码混淆
+            minifyEnabled true
+//             移除无用的resource文件
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
         }
     }
 
@@ -35,6 +44,8 @@ android {
     }
 }
 
+
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -45,6 +56,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     //noinspection GradleDependency
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    implementation 'com.android.support:multidex:1.0.3' //行吧，突然碰到方法数限制的报错提示
 
     //UI
     implementation "com.android.support:appcompat-v7:$rootProject.appcompatVersion"
@@ -62,7 +74,7 @@ dependencies {
     //rx
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxjavaVersion"
     implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxandroidVersion"
-    implementation "com.jakewharton.rxbinding2:rxbinding:$rootProject.rxbindingVersion"
+//    implementation "com.jakewharton.rxbinding2:rxbinding-kotlin:$rootProject.rxbindingVersion"
     implementation "com.tbruyelle.rxpermissions2:rxpermissions:$rootProject.rxpermissionsVersion"
     implementation 'com.github.ReactiveX:RxKotlin:1.x-SNAPSHOT'
 
@@ -79,18 +91,17 @@ dependencies {
 
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
     implementation 'com.afollestad.material-dialogs:commons:0.9.6.0'
-//    implementation 'org.greenrobot:eventbus:3.0.0'
-    implementation 'org.greenrobot:eventbus:3.1.1'
-    kapt 'org.greenrobot:eventbus-annotation-processor:3.1.1'  //eventBus在kotlin中与Java的区别
+//    implementation 'org.greenrobot:eventbus:3.1.1'
+//    kapt 'org.greenrobot:eventbus-annotation-processor:3.1.1'  //eventBus在kotlin中与Java的区别
     implementation "com.github.githubwing:ByeBurger:$rootProject.ByeBurgerVersion" //bottomNavView
-    implementation 'com.zaaach:citypicker:2.0.2'
+//    implementation 'com.zaaach:citypicker:2.0.2'
     implementation 'liji.library.dev:citypickerview:3.0.0'
 
 
 }
 
-kapt {
-    arguments {
-        arg('eventBusIndex', 'com.example.myapp.MyEventBusIndex')
-    }
-}
+//kapt {
+//    arguments {
+//        arg('eventBusIndex', 'com.example.myapp.MyEventBusIndex')
+//    }
+//}

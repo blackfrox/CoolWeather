@@ -9,10 +9,8 @@ import com.example.weather.other.db.CityWeather
 import com.example.weather.other.RxBus.RxBus
 import com.example.wanandroidtest.SPUtil
 import com.example.wanandroidtest.putString
-import com.example.weather.MyApp
-import com.example.weather.other.RxBus.event.InitApplicationEvent
+import com.example.weather.other.RxBus.event.ThemeChangedEvent
 import com.tbruyelle.rxpermissions2.RxPermissions
-import com.tencent.bugly.crashreport.CrashReport
 import org.litepal.crud.DataSupport
 
 /**
@@ -30,28 +28,22 @@ class MainPresenter(val view: MainContract.View,
 
     private fun registerEvent() {
         addSubscribe(
-//                RxBus.instance.toFlowable(ThemeChangedEvent::class.java)
-//                .subscribe {
-//                    view.showThemeChange()}
-
-                RxBus.instance.toFlowable(InitApplicationEvent::class.java)
-                        .subscribe {
-                            //                    LitePal.initialize(MyApp.instance) //litePal
-                            CrashReport.initCrashReport(MyApp.instance.applicationContext, "35e91c27-bb7d-4fd5-b474-14f96504202b", false) //bugly
-                        }
-
+                RxBus.getDefault().toFlowable(ThemeChangedEvent::class.java)
+                .subscribe {
+                    view.showThemeChange()
+                }
         )
     }
 
 
     /**
-     * @param selectedPosition 跳转的position，暂时没写
+     * @param selectedItem 跳转的position，暂时没写
      */
-    override fun refresh(selectedPosition: Int, isRefresh: Boolean) {
+    override fun refresh(selectedItem: Int, isRefresh: Boolean) {
         when {
-            isRefresh or (selectedPosition > -1)  -> {
+            isRefresh or (selectedItem > -1)  -> {
                 val list = DataSupport.order("countyId").find(CityWeather::class.java)
-                view.initFragment(list,selectedPosition,isRefresh)
+                view.initFragment(list,selectedItem,isRefresh)
             }
         }
     }

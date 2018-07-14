@@ -53,21 +53,24 @@
             android:enabled="true"
             android:process=":remote"/>
         <!-- 百度定位 -->
+        <activity android:name=".ui.SplashActivity"
+                  android:screenOrientation="portrait">
 
+        </activity>
         <activity
             android:name=".ui.main.MainActivity"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
-
             </intent-filter>
+
         </activity>
         <activity
             android:name=".ui.choose.ChooseActivity"
-
             android:screenOrientation="portrait">
         </activity>
         <activity
@@ -101,6 +104,7 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/new_app_widget_info"/>
         </receiver>
+
 
     </application>
 

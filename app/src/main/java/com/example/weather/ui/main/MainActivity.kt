@@ -29,9 +29,7 @@ import com.example.weather.util.StatusBarUtil
 import com.example.weather.util.WeatherUtil
 import com.tbruyelle.rxpermissions2.RxPermissions
 import kotlinx.android.synthetic.main.activity_main.*
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
+
 import org.jetbrains.anko.toast
 
 /**
@@ -77,21 +75,20 @@ class MainActivity : BaseActivity(), MainContract.View {
     }
 
     private fun initViewPager() {
-        val alphaAnimation = AlphaAnimation(0f, 1f)
-                .apply {
-                    duration = 260
-                    setAnimationListener(object : Animation.AnimationListener {
-                        override fun onAnimationStart(animation: Animation) {
-                            window.setBackgroundDrawable(//getResources().getDrawable(R.drawable.window_frame_color));
-                                    ColorDrawable(Color.BLACK))
-                            //TODO: 增加后台更新服务
-                            //				WeatherNotificationService.startServiceWithNothing(MainActivity.this); //设置前台服务，保活机制
-                        }
-
-                        override fun onAnimationRepeat(animation: Animation) {}
-                        override fun onAnimationEnd(animation: Animation) {}
-                    })
-                }
+//        val alphaAnimation = AlphaAnimation(0f, 1f)
+//                .apply {
+//                    duration = 260
+//                    setAnimationListener(object : Animation.AnimationListener {
+//                        override fun onAnimationStart(animation: Animation) {
+//                            window.setBackgroundDrawable(//getResources().getDrawable(R.drawable.window_frame_color));
+//                                    ColorDrawable(Color.BLACK))
+//                            //				WeatherNotificationService.startServiceWithNothing(MainActivity.this); //设置前台服务，保活机制
+//                        }
+//
+//                        override fun onAnimationRepeat(animation: Animation) {}
+//                        override fun onAnimationEnd(animation: Animation) {}
+//                    })
+//                }
 
         mAdapter = object : FragmentPagerAdapter(supportFragmentManager) {
             override fun getItem(position: Int): Fragment {
@@ -138,20 +135,7 @@ class MainActivity : BaseActivity(), MainContract.View {
             setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.menu_share -> {
-                        RxPermissions(this@MainActivity).request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                                .subscribe {
-                                    if (it) {
-//                                        String shareType = SettingsUtil.getWeatherShareType();
-//                                        if (shareType.equals("纯文本")) {
-                                        val shareData = (mAdapter.getItem(viewPager.currentItem) as WeatherFragment).shareData
-                                        if (shareData != null)
-                                            ShareUtils.shareText(this@MainActivity,
-                                                    WeatherUtil.getShareMessage(shareData), "分享到");
-//                                        } else if (shareType.equals("仿锤子便签")) {
-//                                            ShareActivity.start(getActivity(), WeatherUtil.getInstance().getShareMessage(weather));
-//                                        }
-                                    }
-                                }
+                        ShareUtils.shareText(this@MainActivity, getString(R.string.share_message), "分享到")
 
                     }
                 }
@@ -167,7 +151,7 @@ class MainActivity : BaseActivity(), MainContract.View {
 //    val currentId: Int=viewPager.currentItem
 
     //因为该方法会重复调用，记得将其中的所有list集合清空
-    override fun initFragment(list: MutableList<CityWeather>,selectedPosition: Int,isRefresh: Boolean) {
+    override fun initFragment(list: MutableList<CityWeather>, selectedPosition: Int, isRefresh: Boolean) {
         //TODO: 测试用
 //        if (list.size <= 1 && list.size > 0) {
 //            list.add(list[0])
@@ -185,7 +169,7 @@ class MainActivity : BaseActivity(), MainContract.View {
         list.forEach { titles.add(it.countyName) }
         viewPager.offscreenPageLimit = mAdapter.getCount()
         pageTitle.notifyDataSetChanged()
-        if (selectedPosition>-1){
+        if (selectedPosition > -1) {
             startFragment(selectedPosition)
         }
     }
@@ -196,9 +180,8 @@ class MainActivity : BaseActivity(), MainContract.View {
     }
 
 
-
     override fun showThemeChange() {
-//        recreate()
+        recreate()
 //        initTheme()
     }
 
@@ -211,9 +194,9 @@ class MainActivity : BaseActivity(), MainContract.View {
         when (resultCode) {
             Activity.RESULT_OK -> {
 
-                val boolean=data.getBooleanExtra(CHANGE,false)
+                val boolean = data.getBooleanExtra(CHANGE, false)
                 val selectedItem = data.getIntExtra(SELECTED_ITEM, -1)
-                presenter.refresh(selectedItem,boolean)
+                presenter.refresh(selectedItem, boolean)
             }
         }
     }

@@ -14,7 +14,7 @@ class CityManagerPresenter(val view: CityManagerContract.View) :
     }
 
     private fun registerEvent() {
-        addSubscribe(RxBus.instance.toFlowable(CityManagerEvent::class.java)
+        addSubscribe(RxBus.getDefault().toFlowable(CityManagerEvent::class.java)
                 .subscribe {
                     if (!TextUtils.isEmpty(it.countyName))
                         view.addData(it.countyName)

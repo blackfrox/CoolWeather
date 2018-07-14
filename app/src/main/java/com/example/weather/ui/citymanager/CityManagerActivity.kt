@@ -27,11 +27,7 @@ import com.example.weather.util.LogUtil
 import com.example.weather.util.initToolbar
 import com.lljjcoder.style.citylist.CityListSelectActivity
 import com.lljjcoder.style.citylist.bean.CityInfoBean
-import com.zaaach.citypicker.CityPicker
-import com.zaaach.citypicker.adapter.OnPickListener
-import com.zaaach.citypicker.model.City
-import com.zaaach.citypicker.model.LocateState
-import com.zaaach.citypicker.model.LocatedCity
+
 import kotlinx.android.synthetic.main.activity_city_manager.*
 import org.jetbrains.anko.longToast
 //import kotlinx.android.synthetic.main.toolbar.*

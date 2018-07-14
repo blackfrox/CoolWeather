@@ -14,7 +14,6 @@ class Choose00Presenter(val view: Choose00Contract.View)
                         .applyScheduler()
                         .subscribe({
                             if (it.heWeather6[0].status=="ok")
-                                view.showHotCity(it.heWeather6[0].basic)
                             else
                                 view.showMessage("网络请求失败")
                         },{

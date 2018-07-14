@@ -9,7 +9,7 @@
         //解决白屏的两种方法
         <!--<item name="android:windowIsTranslucent">true</item>-->
         <!--<item name="android:windowNoTitle">true</item>-->
-        <!--<item name="android:windowDisablePreview">true</item> //解决白屏问题(简书就是用的这种方法)-->
+        <item name="android:windowDisablePreview">true</item> //解决白屏问题(简书就是用的这种方法)
     </style>
 
     <style name="AppTheme" parent="BaseTheme">
