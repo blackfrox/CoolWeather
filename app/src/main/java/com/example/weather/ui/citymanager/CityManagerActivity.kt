@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Canvas
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
@@ -21,16 +20,14 @@ import com.example.weather.R
 import com.example.weather.base.BaseActivity
 import com.example.weather.other.db.CityWeather
 import com.example.weather.ui.adapter.CityManagerAdapter
-import com.example.weather.ui.choose.ChooseActivity
 import com.example.weather.ui.main.MainActivity
+import com.example.weather.ui.main.WeatherFragment
 import com.example.weather.util.LogUtil
+import com.example.weather.util.getShareMessage
 import com.example.weather.util.initToolbar
 import com.lljjcoder.style.citylist.CityListSelectActivity
 import com.lljjcoder.style.citylist.bean.CityInfoBean
-
 import kotlinx.android.synthetic.main.activity_city_manager.*
-import org.jetbrains.anko.longToast
-//import kotlinx.android.synthetic.main.toolbar.*
 import org.jetbrains.anko.toast
 import org.litepal.crud.DataSupport
 
@@ -47,22 +44,25 @@ class CityManagerActivity : BaseActivity() {
     private lateinit var list: List<CityWeather>
     private var dataChanged = false
     private var selectedPosition = -1
-    private val ADD_ITEM = 1
+//    private val ADD_ITEM = 1
 
     override fun initView(savedInstanceState: Bundle?) {
         initToolbar(toolbar as Toolbar)
-        //TODO: 最后记得改回来
 //        val item=DataSupport.findFirst(CityWeather::class.java)
 
         fab.setOnClickListener {
-            //            val intent = Intent(this@CityManagerActivity, ChooseActivity::class.java)
-//            startActivityForResult(intent, ADD_ITEM)
-
             val intent = Intent(this@CityManagerActivity, CityListSelectActivity::class.java)
             startActivityForResult(intent, CityListSelectActivity.CITY_SELECT_RESULT_FRAG)
+//            val intent = Intent(this@CityManagerActivity, ChooseActivity::class.java)
+//            startActivityForResult(intent, ADD_ITEM)
         }
+        initViewPager()
+    }
+
+
+    private fun initViewPager(){
         list = DataSupport.order("countyId").find(CityWeather::class.java)
-        if (list.size <= 0)
+        if (list.isEmpty())
             return
         mAdapter = CityManagerAdapter(list)
         recyclerView.apply {
@@ -79,10 +79,10 @@ class CityManagerActivity : BaseActivity() {
                             super.onMove(recyclerView, source, target)
 
                 override fun getMovementFlags(recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder?): Int {
-                    if (viewHolder?.adapterPosition == 0)
-                        return makeMovementFlags(0, 0)
+                    return if (viewHolder?.adapterPosition == 0)
+                        makeMovementFlags(0, 0)
                     else
-                        return super.getMovementFlags(recyclerView, viewHolder)
+                        super.getMovementFlags(recyclerView, viewHolder)
                 }
 
             }
@@ -153,7 +153,7 @@ class CityManagerActivity : BaseActivity() {
                 }
             })
 
-            setOnItemClickListener { adapter, view, position ->
+            setOnItemClickListener { _, _, position ->
                 selectedPosition = position
                 val intent = Intent().apply {
                     putExtra(MainActivity.SELECTED_ITEM, selectedPosition)
@@ -178,7 +178,7 @@ class CityManagerActivity : BaseActivity() {
      *todo: 后期可以优化一下
      */
     override fun onBackPressed() {
-        for (i in 0 until mAdapter.getData().size) {
+        for (i in 0 until mAdapter.data.size) {
             val values = ContentValues()
             values.put("countyId", i)
             DataSupport.updateAll(CityWeather::class.java, values, "countyName = ?", mAdapter.data[i].countyName)
@@ -212,7 +212,7 @@ class CityManagerActivity : BaseActivity() {
                             }
                             else -> {
                                 mAdapter.data.forEach {
-                                    if (it.countyName.equals(cityInfoBean.name)) {
+                                    if (it.countyName == cityInfoBean.name) {
                                         toast("重复的城市!")
                                         return
                                     }

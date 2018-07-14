@@ -14,6 +14,9 @@ import com.tencent.bugly.crashreport.CrashReport
 
 import org.litepal.LitePal
 
+/**
+ * 原本打算使用RxBus+SplashActivity优化冷启动，但是算了，以后再说，优化已经用代码混淆替代了
+ */
 class SplashActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

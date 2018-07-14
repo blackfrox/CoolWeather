@@ -7,8 +7,8 @@ import com.baidu.location.BDLocation
 import com.example.weather.mvp.contract.MainContract
 import com.example.weather.other.db.CityWeather
 import com.example.weather.other.RxBus.RxBus
-import com.example.wanandroidtest.SPUtil
-import com.example.wanandroidtest.putString
+import com.example.weather.util.SPUtil
+import com.example.weather.util.putString
 import com.example.weather.other.RxBus.event.ThemeChangedEvent
 import com.tbruyelle.rxpermissions2.RxPermissions
 import org.litepal.crud.DataSupport

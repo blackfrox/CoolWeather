@@ -1,8 +1,5 @@
 package com.example.weather.util
 
-import com.example.wanandroidtest.SPUtil
-import com.example.wanandroidtest.putInt
-
 
 /**
  *

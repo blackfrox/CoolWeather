@@ -1,5 +1,8 @@
 package com.example.weather.util
 
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.support.annotation.IdRes
@@ -26,6 +29,9 @@ fun AppCompatActivity.initToolbar(toolbar: Toolbar){
     }
 }
 
+fun Context.startActivity(clazz: Class<Activity>){
+    startActivity(Intent(this,clazz::class.java))
+}
 /**
  * 获取当前时间 格式: yyyy年MM月dd日    HH:mm:ss
  */

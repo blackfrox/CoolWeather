@@ -3,6 +3,7 @@ package com.example.weather.util
 import android.content.Context
 import android.content.Intent
 import com.example.weather.R
+import com.example.weather.other.data.ShareData
 import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.*
@@ -74,6 +75,21 @@ fun getTime(): String {
     val date = sDateFormat.format(java.util.Date())
     return date
 }
-fun <T>Context.startActivity(clazz: Class<T>){
-    startActivity(Intent(this,clazz))
+
+fun getShareMessage(shareData: ShareData): String? {
+    val stringBuffer =StringBuffer()
+    stringBuffer.apply {
+        with(shareData){
+            append("$countyName 天气:")
+            append("\r\n")
+            append("$weather $tmp  $aqi")
+            append("\r\n")
+            append(today)
+            append("\r\n")
+            append(tommor)
+            append("\r\n")
+            append(getTime())
+        }
+    }
+    return stringBuffer.toString()
 }

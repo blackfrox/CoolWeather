@@ -1,35 +1,30 @@
 package com.example.weather.ui.main
 
-import android.Manifest
 import android.app.Activity
 import android.appwidget.AppWidgetManager
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v7.app.ActionBarDrawerToggle
 import android.view.Gravity
-import android.view.animation.AlphaAnimation
-import android.view.animation.Animation
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.RemoteViews
 import com.example.weather.R
 import com.example.weather.base.BaseActivity
 import com.example.weather.mvp.contract.MainContract
 import com.example.weather.mvp.presenter.MainPresenter
 import com.example.weather.network.LocationHelper
-import com.example.weather.other.RxBus.event.ThemeChangedEvent
 import com.example.weather.other.db.CityWeather
 import com.example.weather.ui.AboutActivity
 import com.example.weather.ui.citymanager.CityManagerActivity
 import com.example.weather.ui.setting.SettingActivity
-import com.example.weather.util.ShareUtils
+import com.example.weather.util.LogUtil
 import com.example.weather.util.StatusBarUtil
-import com.example.weather.util.WeatherUtil
-import com.tbruyelle.rxpermissions2.RxPermissions
+import com.example.weather.util.getShareMessage
+import com.example.weather.util.initToolbar
 import kotlinx.android.synthetic.main.activity_main.*
-
 import org.jetbrains.anko.toast
 
 /**
@@ -130,20 +125,46 @@ class MainActivity : BaseActivity(), MainContract.View {
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
         StatusBarUtil.setPaddingSmart(this, pageTitle)
+
         toolbar.apply {
             inflateMenu(R.menu.menu_main)
+
             setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.menu_share -> {
-                        ShareUtils.shareText(this@MainActivity, getString(R.string.share_message), "分享到")
-
+                        LogUtil.d("MainActivity","点击了toolbar")
+//                        ShareUtils.shareText(this@MainActivity, getString(R.string.share_message), "分享到")
+                        (fragments[viewPager.currentItem] as WeatherFragment).shareData?.let {
+                            LogUtil.d("MainActivity","shareData::::$it")
+                            getShareMessage(it)
+                        }
+                        true
                     }
+                    else ->  false
                 }
-                true
+
             }
 
         }
+//        initToolbar(toolbar)
     }
+
+//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+//        menuInflater.inflate(R.menu.menu_main,menu)
+//        return true
+//    }
+//    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+//        when (item?.itemId) {
+//            R.id.menu_share -> {
+////                        ShareUtils.shareText(this@MainActivity, getString(R.string.share_message), "分享到")
+//                (fragments[viewPager.currentItem] as WeatherFragment).shareData?.let {
+//                    getShareMessage(it)
+//                }
+//                return true
+//            }
+//            else -> return super.onOptionsItemSelected(item)
+//        }
+//    }
 
     private val fragments by lazy { arrayListOf<Fragment>() }
     private val titles by lazy { arrayListOf<String>() }
@@ -167,7 +188,7 @@ class MainActivity : BaseActivity(), MainContract.View {
 
         if (titles.size > 0) titles.clear()
         list.forEach { titles.add(it.countyName) }
-        viewPager.offscreenPageLimit = mAdapter.getCount()
+        viewPager.offscreenPageLimit = mAdapter.count
         pageTitle.notifyDataSetChanged()
         if (selectedPosition > -1) {
             startFragment(selectedPosition)

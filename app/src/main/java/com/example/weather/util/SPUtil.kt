@@ -1,9 +1,8 @@
-package com.example.wanandroidtest
+package com.example.weather.util
 
 import android.content.Context
 import android.content.SharedPreferences
 import com.example.weather.MyApp
-import com.example.weather.other.db.CityWeather
 
 /**
  * Created by Administrator on 2018/4/17 0017.
