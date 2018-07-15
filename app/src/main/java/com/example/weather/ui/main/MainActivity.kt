@@ -8,8 +8,6 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v7.app.ActionBarDrawerToggle
 import android.view.Gravity
-import android.view.Menu
-import android.view.MenuItem
 import android.widget.RemoteViews
 import com.example.weather.R
 import com.example.weather.base.BaseActivity
@@ -21,9 +19,9 @@ import com.example.weather.ui.AboutActivity
 import com.example.weather.ui.citymanager.CityManagerActivity
 import com.example.weather.ui.setting.SettingActivity
 import com.example.weather.util.LogUtil
+import com.example.weather.util.ShareUtils
 import com.example.weather.util.StatusBarUtil
 import com.example.weather.util.getShareMessage
-import com.example.weather.util.initToolbar
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.toast
 
@@ -33,8 +31,8 @@ import org.jetbrains.anko.toast
 class MainActivity : BaseActivity(), MainContract.View {
 
     companion object {
-        val CHANGE = "change"
-        val SELECTED_ITEM = "selected_item"
+        const val CHANGE = "change" // const val相当于public final static //val 可见性为private final static，并且val 会生成方法getNormalObject() ，通过方法调用访问。
+        const val SELECTED_ITEM = "selected_item"
     }
 
     override lateinit var presenter: MainContract.Presenter
@@ -127,26 +125,25 @@ class MainActivity : BaseActivity(), MainContract.View {
         StatusBarUtil.setPaddingSmart(this, pageTitle)
 
         toolbar.apply {
-            inflateMenu(R.menu.menu_main)
-
+            inflateMenu(R.menu.menu_main) //使用这个方法的前提条件:不能使用setSupportActionBar(toolbar); getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.menu_share -> {
-                        LogUtil.d("MainActivity","点击了toolbar")
-//                        ShareUtils.shareText(this@MainActivity, getString(R.string.share_message), "分享到")
+                        LogUtil.d("MainActivity", "点击了toolbar")
                         (fragments[viewPager.currentItem] as WeatherFragment).shareData?.let {
-                            LogUtil.d("MainActivity","shareData::::$it")
-                            getShareMessage(it)
+                            LogUtil.d("MainActivity", "shareData::::$it")
+                            ShareUtils.shareText(this@MainActivity, getShareMessage(it), "分享到")
                         }
                         true
                     }
-                    else ->  false
+                    else -> false
                 }
 
             }
 
         }
-//        initToolbar(toolbar)
+//        setSupportActionBar(toolbar)
+//        supportActionBar?.title=""
     }
 
 //    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -233,7 +230,7 @@ class MainActivity : BaseActivity(), MainContract.View {
             //3 When the configuration is complete, get an instance of the AppWidgetManager by calling getInstance(Context):
             val appWidManager = AppWidgetManager.getInstance(this)
             //4 Update the App Widget with a RemoteViews layout by calling updateAppWidget(int, RemoteViews):
-            val views = RemoteViews(this.getPackageName(), R.layout.new_app_widget)
+            val views = RemoteViews(this.packageName, R.layout.new_app_widget)
             appWidManager.updateAppWidget(mAppWidgetId, views)
         }
     }

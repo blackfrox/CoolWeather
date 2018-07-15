@@ -15,14 +15,15 @@ abstract class  BaseActivity: AppCompatActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //主题切换
         initTheme()
         setContentView(getLayoutId())
         //沉浸式状态栏
         StatusBarUtil.immersive(this)
         val toolbar =findViewById<Toolbar>(R.id.toolbar)
         if (toolbar!=null) StatusBarUtil.setPaddingSmart(this,toolbar)
+        //给外部使用
         initView(savedInstanceState)
-
     }
 
     abstract fun getLayoutId(): Int //当前布局的id

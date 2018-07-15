@@ -1,7 +1,7 @@
 package com.example.weather
 
 /**
- * //TODO: bug 右上角的分享按钮点击无效
+ * //TODO: bug
  *
  *
  * 后期优化:　１　城市管理界面自己写一个
@@ -12,6 +12,7 @@ package com.example.weather
  * 2 撤销后，数据库并没有添加
  * 3 冷启动时间有点久  (代码混淆)
  * 4 不知道为什么kotlin-extension的view有时候是红色没有加载，不知道是这个项目的未知错误，还是kotlin本身的问题(现在没事了)
+ * 5 右上角的分享按钮点击无效 ：原来一直是我写错了(心疼找了半天，用两种方式比对)
  * 小知识：
  * 1 使用?attr/colorPrimary 代替@color/colorPrimary，可以方便后期增加主题切换功能
  *

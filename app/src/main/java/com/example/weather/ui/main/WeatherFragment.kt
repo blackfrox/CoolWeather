@@ -32,6 +32,7 @@ import org.jetbrains.anko.support.v4.act
 import org.jetbrains.anko.support.v4.toast
 import android.content.Intent.getIntent
 import android.widget.RemoteViews
+import com.example.weather.ui.adapter.WeatherAdapter
 import org.litepal.crud.DataSupport
 
 
@@ -50,7 +51,7 @@ class WeatherFragment : BaseFragment(), WeatherContract.View {
         return R.layout.fragment_weather
     }
 
-    override  var presenter: WeatherContract.Presenter=WeatherPresenter(this@WeatherFragment)
+    override var presenter: WeatherContract.Presenter = WeatherPresenter(this@WeatherFragment)
 
     private var cityWeather: CityWeather = CityWeather()
     private var countyName: String = ""
@@ -91,7 +92,7 @@ class WeatherFragment : BaseFragment(), WeatherContract.View {
                 weather = cond_txt_d
                 save()
             }
-            shareData = ShareData(countyName, "$cond_txt_d", "$tmp℃", "",
+            shareData = ShareData(countyName, cond_txt_d, "$tmp℃", "",
                     "今天:　${getWeek(date)}  $cond_txt_d  $tmp_min~$tmp_max℃",
                     "明天: ${getWeek(list[1].date)} ${list[1].cond_txt_d}  ${list[1].tmp_min}~${list[1].tmp_max}℃")
         }
@@ -99,20 +100,21 @@ class WeatherFragment : BaseFragment(), WeatherContract.View {
             layoutManager = LinearLayoutManager(activity).apply {
                 orientation = LinearLayoutManager.HORIZONTAL
             }
-            adapter = object : BaseQuickAdapter<HeWeatherForecast.HeWeather6Bean.DailyForecastBean, BaseViewHolder>
-            (R.layout.item_forecast, list) {
-                override fun convert(helper: BaseViewHolder, item: HeWeatherForecast.HeWeather6Bean.DailyForecastBean) {
-                    helper.apply {
-                        item.apply {
-                            val time = if (date == getCurrentTime()) "今天" else getWeek(date)
-                            setText(R.id.forecast_time, time)
-                            setText(R.id.forecast_temp, "$tmp_max°/$tmp_min°")
-                            getView<ImageView>(R.id.forecast_icon)
-                                    .setImageResource(parse(cond_code_d))
-                        }
-                    }
-                }
-            }
+            adapter = WeatherAdapter(R.layout.item_forecast, list)
+//            adapter = object : BaseQuickAdapter<HeWeatherForecast.HeWeather6Bean.DailyForecastBean, BaseViewHolder>
+//            (R.layout.item_forecast, list) {
+//                override fun convert(helper: BaseViewHolder, item: HeWeatherForecast.HeWeather6Bean.DailyForecastBean) {
+//                    helper.apply {
+//                        item.apply {
+//                            val time = if (date == getCurrentTime()) "今天" else getWeek(date)
+//                            setText(R.id.forecast_time, time)
+//                            setText(R.id.forecast_temp, "$tmp_max°/$tmp_min°")
+//                            getView<ImageView>(R.id.forecast_icon)
+//                                    .setImageResource(parse(cond_code_d))
+//                        }
+//                    }
+//                }
+//            }
         }
 
     }
@@ -159,18 +161,18 @@ class WeatherFragment : BaseFragment(), WeatherContract.View {
                 this@apply.tmp = heWeather6Bean.now.tmp
             }
         }
-        val countyName=DataSupport.findFirst(CityWeather::class.java).countyName
+        val countyName = DataSupport.findFirst(CityWeather::class.java).countyName
 
-        if (activity is MainActivity &&  countyName.equals(cityWeather.countyName)) {
-                (activity as MainActivity).updateAppWidget()
+        if (activity is MainActivity && countyName == cityWeather.countyName) {
+            (activity as MainActivity).updateAppWidget()
         }
 
     }
 
 
     companion object {
-        private val ITEM = "item"
-        private val ID = "id"
+        private const val ITEM = "item"
+        private const val ID = "id"
         /**
          * @param id 代表当前fragment在viewPager中的位置
          */

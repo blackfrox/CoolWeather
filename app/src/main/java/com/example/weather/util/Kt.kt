@@ -76,7 +76,7 @@ fun getTime(): String {
     return date
 }
 
-fun getShareMessage(shareData: ShareData): String? {
+fun getShareMessage(shareData: ShareData): String{
     val stringBuffer =StringBuffer()
     stringBuffer.apply {
         with(shareData){

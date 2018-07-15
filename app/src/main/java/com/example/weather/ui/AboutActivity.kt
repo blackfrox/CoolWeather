@@ -23,12 +23,12 @@ class AboutActivity : BaseActivity() {
         }
         //分享
         btn_share_app.setOnClickListener {
-            ShareUtils.shareText(this,getString(R.string.share_message),"分享到")
+            ShareUtils.shareText(this, getString(R.string.share_message), "分享到")
         }
         //评论
         btn_comment.setOnClickListener {
-            val uri=Uri.parse("market://details?id=$packageName")
-            val intent=Intent(Intent.ACTION_VIEW,uri).apply {
+            val uri = Uri.parse("market://details?id=$packageName")
+            val intent = Intent(Intent.ACTION_VIEW, uri).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
             startActivity(intent)

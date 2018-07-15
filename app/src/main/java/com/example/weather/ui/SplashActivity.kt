@@ -1,18 +1,8 @@
 package com.example.weather.ui
 
-import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import com.example.weather.R
 import com.example.weather.base.BaseActivity
-import com.example.weather.other.RxBus.RxBus
-import com.example.weather.other.RxBus.event.InitApplicationEvent
-import com.example.weather.other.RxBus.event.MainEvent
-import com.example.weather.ui.main.MainActivity
-import com.lljjcoder.style.citylist.utils.CityListLoader
-import com.tencent.bugly.crashreport.CrashReport
-
-import org.litepal.LitePal
 
 /**
  * 原本打算使用RxBus+SplashActivity优化冷启动，但是算了，以后再说，优化已经用代码混淆替代了

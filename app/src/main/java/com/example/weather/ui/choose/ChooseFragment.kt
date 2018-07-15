@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import com.example.weather.R
-import com.example.weather.base.BaseFragment
 import com.example.weather.mvp.contract.ChooseContract
 import com.example.weather.mvp.presenter.ChoosePresenter
 import kotlinx.android.synthetic.main.fragment_choose_area.*

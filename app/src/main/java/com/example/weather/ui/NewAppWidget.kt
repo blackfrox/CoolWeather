@@ -1,5 +1,6 @@
 package com.example.weather.ui
 
+import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
@@ -10,10 +11,6 @@ import com.example.weather.other.db.CityWeather
 import com.example.weather.ui.main.MainActivity
 import com.example.weather.util.parse
 import org.litepal.crud.DataSupport
-import android.R.attr.button
-import android.app.PendingIntent
-
-
 
 
 /**
@@ -34,9 +31,7 @@ class NewAppWidget : AppWidgetProvider() {
     /**
      * 接受窗口小部件点击时发送的广播
      */
-    override fun onReceive(context: Context?, intent: Intent?) {
-        super.onReceive(context, intent)
-    }
+    override fun onReceive(context: Context?, intent: Intent?) = super.onReceive(context, intent)
 
     /**
      * 每次删除是调用该方法
@@ -44,6 +39,7 @@ class NewAppWidget : AppWidgetProvider() {
     override fun onDeleted(context: Context?, appWidgetIds: IntArray?) {
         super.onDeleted(context, appWidgetIds)
     }
+
     //当该窗口小部件第一次被添加时调用
     override fun onEnabled(context: Context) {
         // Enter relevant functionality for when the first widget is created
@@ -62,15 +58,15 @@ class NewAppWidget : AppWidgetProvider() {
             // Construct the RemoteViews object
             val views = RemoteViews(context.packageName, R.layout.new_app_widget)
 
-           DataSupport.findFirst(CityWeather::class.java)
-                   .apply {
-                       views.apply {
-                           setImageViewResource(R.id.img_weather, parse(weather))
-                           setTextViewText(R.id.tv_weather,weather)
-                           setTextViewText(R.id.tv_tmp,"$tmp℃")
-                           setTextViewText(R.id.tv_county_name,countyName)
-                       }
-                   }
+            DataSupport.findFirst(CityWeather::class.java)
+                    .apply {
+                        views.apply {
+                            setImageViewResource(R.id.img_weather, parse(weather))
+                            setTextViewText(R.id.tv_weather, weather)
+                            setTextViewText(R.id.tv_tmp, "$tmp℃")
+                            setTextViewText(R.id.tv_county_name, countyName)
+                        }
+                    }
 
             // Create an Intent to launch ExampleActivity
             val intent = Intent(context, MainActivity::class.java)

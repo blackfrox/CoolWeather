@@ -10,17 +10,15 @@ import com.example.weather.R
 import com.example.weather.util.FileSizeUtil
 import com.example.weather.util.FileUtil
 import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 
 class SettingFragment: PreferenceFragment() {
     companion object {
-        val THEME = "pref_theme"
-        val CLEAN_CACHE = "pref_clean_cache"
+        const val THEME = "pref_theme"
+        const val CLEAN_CACHE = "pref_clean_cache"
     }
 
-    val compositeDisposable by lazy { CompositeDisposable() }
+    private val compositeDisposable by lazy { CompositeDisposable() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

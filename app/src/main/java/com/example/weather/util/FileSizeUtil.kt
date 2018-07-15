@@ -13,10 +13,10 @@ import java.text.DecimalFormat
  * Created by hugo on 2016/2/19 0019.
  */
 object FileSizeUtil {
-    val SIZETYPE_B = 1//获取文件大小单位为B的double值
-    val SIZETYPE_KB = 2//获取文件大小单位为KB的double值
-    val SIZETYPE_MB = 3//获取文件大小单位为MB的double值
-    val SIZETYPE_GB = 4//获取文件大小单位为GB的double值
+    const val SIZETYPE_B = 1//获取文件大小单位为B的double值
+    const val SIZETYPE_KB = 2//获取文件大小单位为KB的double值
+    const val SIZETYPE_MB = 3//获取文件大小单位为MB的double值
+    const val SIZETYPE_GB = 4//获取文件大小单位为GB的double值
 
     /**
      * 获取文件指定文件的指定单位的大小
@@ -97,7 +97,7 @@ object FileSizeUtil {
     private fun getFileSize(file: File): Long {
         var size: Long = 0
         if (file.exists()) {
-            var fis: FileInputStream? = null
+            val fis: FileInputStream?
             fis = FileInputStream(file)
             size = fis.available().toLong()
             fis.close()

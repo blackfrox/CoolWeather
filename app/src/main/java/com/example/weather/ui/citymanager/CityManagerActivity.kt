@@ -11,8 +11,6 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.text.TextUtils
-import android.view.Menu
-import android.view.MenuItem
 import com.chad.library.adapter.base.callback.ItemDragAndSwipeCallback
 import com.chad.library.adapter.base.listener.OnItemDragListener
 import com.chad.library.adapter.base.listener.OnItemSwipeListener
@@ -21,9 +19,7 @@ import com.example.weather.base.BaseActivity
 import com.example.weather.other.db.CityWeather
 import com.example.weather.ui.adapter.CityManagerAdapter
 import com.example.weather.ui.main.MainActivity
-import com.example.weather.ui.main.WeatherFragment
 import com.example.weather.util.LogUtil
-import com.example.weather.util.getShareMessage
 import com.example.weather.util.initToolbar
 import com.lljjcoder.style.citylist.CityListSelectActivity
 import com.lljjcoder.style.citylist.bean.CityInfoBean

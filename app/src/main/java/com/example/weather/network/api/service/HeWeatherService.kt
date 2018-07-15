@@ -33,8 +33,8 @@ interface HeWeatherService {
     @GET("/top?group=world")
     fun getHotCity(@Query("number") number: Int = 9,
                    @Query("key") key: String = "df7cda9693794b85a9ffc8fdb781230c",
-                   @Url url: String="https://search.heweather.com/")
-    :Observable<HeHotCity>
+                   @Url url: String = "https://search.heweather.com/")
+            : Observable<HeHotCity>
 
 
     //搜索城市

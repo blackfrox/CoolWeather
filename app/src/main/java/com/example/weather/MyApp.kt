@@ -9,7 +9,7 @@ import org.litepal.LitePal
 import kotlin.properties.Delegates
 
 
-class MyApp :MultiDexApplication() {
+class MyApp : MultiDexApplication() {
 
     companion object {
         var instance by Delegates.notNull<MyApp>()
@@ -35,13 +35,13 @@ class MyApp :MultiDexApplication() {
     }
 
 
-    private fun init(){
+    private fun init() {
         LitePal.initialize(this) //litePal
         /**
          * 预先加载一级列表显示 全国所有城市的数据
          */
         CityListLoader.getInstance().loadCityData(this)
-        CrashReport.initCrashReport(getApplicationContext(), "35e91c27-bb7d-4fd5-b474-14f96504202b", false) //bugly
+        CrashReport.initCrashReport(applicationContext, "35e91c27-bb7d-4fd5-b474-14f96504202b", false) //bugly
 
     }
 
